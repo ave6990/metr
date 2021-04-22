@@ -1,0 +1,24 @@
+{
+  "name": "metr",
+  "version": "0.1.0",
+  "description": "Metrology cli soft. The project designed to execute the metrology calculating direct in terminal.",
+  "main": "metr.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ave-student/metr.git"
+  },
+  "keywords": [
+    "metrology",
+    "calc",
+    "reports"
+  ],
+  "author": "ave6990",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ave-student/metr/issues"
+  },
+  "homepage": "https://github.com/ave-student/metr#readme"
+}
