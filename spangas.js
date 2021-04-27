@@ -1,35 +1,35 @@
-class SpanGas {	
+class SpanGas {    
 //    static id = 0 // don't work
 
-	constructor(conc, limit, name) {
-		this.conc = conc
-		this.limit = limit
+    constructor(conc, limit, name) {
+        this.conc = conc
+        this.limit = limit
         SpanGas.id++ 
         this.name = name || `SpanGas#${SpanGas.id}`
-	}
+    }
 
-	get min() {
-		return this.conc - this.limit
-	}
+    get min() {
+        return this.conc - this.limit
+    }
 
-	get max() {
-		return this.conc + this.limit
-	}
+    get max() {
+        return this.conc + this.limit
+    }
 
-	get len() {
-		return this.max - this.min
-	}
+    get len() {
+        return this.max - this.min
+    }
 
     static sort(gas1, gas2) {
         return gas1.min - gas2.min
     }
 
     isIntersect(gas1, gas2) {
-    	let temp = sort(gas1, gas2)
-    	if (temp[0].max >= temp[1].min) {
-    		return true
-    	}
-    	return false
+        let temp = sort(gas1, gas2)
+        if (temp[0].max >= temp[1].min) {
+            return true
+        }
+        return false
     }
 }
 
