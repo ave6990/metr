@@ -1,10 +1,20 @@
+/** ГСО-ПГС
+ * @version 0.2.0
+ * @author ave6990
+ */
 class SpanGas {    
-//    static id = 0 // don't work
-
-    constructor(conc, limit, name) {
+    constructor( { conc, limit, name, category }) {
         this.conc = conc
         this.limit = limit
-        SpanGas.id++ 
+        this.category = category
+
+        if (SpanGas.id) {      
+            SpanGas.id++ 
+        } else {
+            SpanGas.id = 1
+        }
+
+        this.id = SpanGas.id
         this.name = name || `SpanGas#${SpanGas.id}`
     }
 
@@ -31,10 +41,16 @@ class SpanGas {
         }
         return false
     }
+
+    toJSON() {
+        return {
+            this.name,
+            this.conc,
+            this.limit,
+            this.category,
+        }
+    }
 }
-
-SpanGas.id = 0
-
 
 const g1 = new SpanGas(2.2, 0.1)
 const g2 = new SpanGas(1.1, 0.05)
