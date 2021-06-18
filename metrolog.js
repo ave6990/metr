@@ -50,7 +50,7 @@ const average = (vals) => {
 
 const precision = (val, prec = 12) => {
     // precision set to 12 signs after comma.
-    parseFloat(val.toFixed(prec)) 
+    return parseFloat(val.toFixed(prec)) 
 }
 
-module.exports = { average, v100nc, rangeConverter, relativeError, reducedError, volumeToNc, sko }
+module.exports = { average, v100nc, rangeConverter, relativeError, reducedError, volumeToNc, sko, precision }
