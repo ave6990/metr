@@ -23,15 +23,23 @@ const v100nc = (temp, pres) => {
     return 100 * (273.2 + temp) * 101.3 / (pres * 293.2)
 }
 
-const sko = (values) => {
+const sko = (values, osko = false) => {
     const n = values.length
     const nc = average(values)
+
     let vals = values.map((val) => {
         return (val - average(values)) ** 2
     })
-    return precision((vals.reduce((res, val) => {
+
+    const sko = (vals.reduce((res, val) => {
         return res + val
-    }) / (n - 1)) ** 0.5)
+    }) / (n - 1)) ** 0.5
+
+    if (osko) {
+        return precision(sko / nc * 100)
+    } else {
+        return precision(sko)
+    }
 }
 
 const average = (vals) => {
@@ -40,9 +48,9 @@ const average = (vals) => {
     }) / n)
 }
 
-const precision = (val) => {
+const precision = (val, prec = 12) => {
     // precision set to 12 signs after comma.
-    parseFloat(val.toFixed(12)) 
+    parseFloat(val.toFixed(prec)) 
 }
 
 module.exports = { average, v100nc, rangeConverter, relativeError, reducedError, volumeToNc, sko }
