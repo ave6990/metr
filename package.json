@@ -20,5 +20,6 @@
   "bugs": {
     "url": "https://github.com/ave-student/metr/issues"
   },
-  "homepage": "https://github.com/ave-student/metr#readme"
+  "homepage": "https://github.com/ave-student/metr#readme",
+  "type": "module"
 }

@@ -6,4 +6,4 @@ const report = (val) => {
     }
 }
 
-module.exports = { report }
+export { report }

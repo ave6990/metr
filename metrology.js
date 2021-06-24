@@ -12,17 +12,6 @@ const reducedError = (d_val, s_val, n_val) => {
     return (d_val - s_val) / n_val * 100
 }
 
-const volumeToNC = (temp, pres) => {
-    return (val) => {
-        return val * pres * 293.2 /
-            ((273.2 + temp) * 101.3)
-    }
-}
-
-const v100nc = (temp, pres) => {
-    return 100 * (273.2 + temp) * 101.3 / (pres * 293.2)
-}
-
 const sko = (values, osko = false) => {
     const n = values.length
     const nc = average(values)
@@ -53,4 +42,4 @@ const precision = (val, prec = 12) => {
     return parseFloat(val.toFixed(prec)) 
 }
 
-module.exports = { average, v100nc, rangeConverter, relativeError, reducedError, volumeToNc, sko, precision }
+export { average, rangeConverter, relativeError, reducedError, sko, precision }

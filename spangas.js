@@ -44,18 +44,18 @@ class SpanGas {
 
     toJSON() {
         return {
-            this.name,
-            this.conc,
-            this.limit,
-            this.category,
+            name: this.name,
+            conc: this.conc,
+            limit: this.limit,
+            category: this.category,
         }
     }
 }
 
-const g1 = new SpanGas(2.2, 0.1)
+/**const g1 = new SpanGas(2.2, 0.1)
 const g2 = new SpanGas(1.1, 0.05)
 const g3 = new SpanGas(4.4, 0.1)
 console.log(g1, g2, g3)
-console.log([g1, g2, g3].sort(SpanGas.sort))
+console.log([g1, g2, g3].sort(SpanGas.sort))*/
 
-module.exports = SpanGas
+export { SpanGas }
