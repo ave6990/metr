@@ -5,10 +5,12 @@
  */
 
 import repl from 'repl'
+/** @debug не работает `import * from './metrology.js'` */
 import { rangeConverter, relativeError, 
     reducedError, sko, average, precision } from './metrology.js'
 import { volumeToNC } from './air-volume.js'
 import { report } from './base-converter.js'
+import { calcRange } from './report.js'
 
 const initializeContext = (context) => {
     Object.assign(context, {
@@ -20,12 +22,25 @@ const initializeContext = (context) => {
         precision: precision,
         volumeToNC: volumeToNC,
         baseConverter: report,
+        calcRange: calcRange,
+        conditions: {
+            temperature: 20,
+            pressure: 101.3,
+            hummidity: 50,
+            voltage: 220,
+            frequency: 50,
+        },
     } )
 }
 
 const r = repl.start( {
     prompt: 'metrology > ',
 } ) 
-initializeContext(r.context)
 
+initializeContext(r.context)
 r.on('reset', initializeContext)
+
+const print = r.context.console.log
+
+print('Conditions:')
+print(r.context.conditions)
