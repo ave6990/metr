@@ -1,6 +1,6 @@
 // must return a function
 
-const quantity_units = {
+const quantityUnits = {
     pressure: {
         Pa: {
             from: (val) => val,
@@ -51,7 +51,7 @@ const quantity_units = {
     }
 }
 
-const molar_mass = {
+const molarMass = {
     N2: 28.016, NH3: 17.031, Ar: 39.944, C2H2: 26.04,
     C3H6O: 58.08, C4H10: 58.12, C4H9OH: 74.12, H2O: 18.016,
     H2: 2.0156, air: 28.96, C6H14: 86.17, He: 4.003,
@@ -69,8 +69,8 @@ const molar_mass = {
     C2H5Cl: 64.52
 }
 
-const is_gas = (gas_name) => {
-    if (Object.keys(molar_mass).some(x => x == gas_name)) {
+const isGas = (gas_name) => {
+    if (Object.keys(molarMass).some(x => x == gas_name)) {
         return true
     }
     else {
@@ -79,8 +79,8 @@ const is_gas = (gas_name) => {
 }
 
 const coefficient = (gas, temp = 20, press = 101.325) => {
-    if (is_gas(gas)) {
-        return press * molar_mass[gas] / 8.314463 / (temp + 273.15)
+    if (isGas(gas)) {
+        return press * molarMass[gas] / 8.314463 / (temp + 273.15)
     }
     else {
         throw new Error('Unknown gas')
@@ -97,7 +97,4 @@ Object.keys(u).filter(q =>
         u == 'm3' ))
 */
 
-module.exports.quantity_units = quantity_units
-module.exports.molar_mass = molar_mass
-module.exports.is_gas = is_gas
-module.exports.coefficient = coefficient
+export { molarMass, isGas, coefficient }

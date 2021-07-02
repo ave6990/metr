@@ -1,5 +1,5 @@
 /** Shell для выполнения метрологических расчетов.
- * @version 0.1.0
+ * @version 0.2.0
  * @author ave6990
  * @email ave6990@ya.ru
  */
@@ -11,6 +11,7 @@ import { rangeConverter, relativeError,
 import { volumeToNC } from './air-volume.js'
 import { report } from './base-converter.js'
 import { calcRange } from './report.js'
+import * as concConverter from './converter.js'
 
 const initializeContext = (context) => {
     Object.assign(context, {
@@ -23,6 +24,7 @@ const initializeContext = (context) => {
         volumeToNC: volumeToNC,
         baseConverter: report,
         calcRange: calcRange,
+        concConverter: concConverter,
         conditions: {
             temperature: 20,
             pressure: 101.3,
