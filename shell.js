@@ -7,11 +7,11 @@
 import repl from 'repl'
 /** @debug не работает `import * from './metrology.js'` */
 import { rangeConverter, relativeError, 
-    reducedError, sko, average, precision } from './metrology.js'
-import { volumeToNC } from './air-volume.js'
-import { report } from './base-converter.js'
-import { calcRange } from './report.js'
-import * as concConverter from './converter.js'
+    reducedError, sko, average, precision } from './lib/metrology.js'
+import { volumeToNC } from './lib/air-volume.js'
+import { report } from './scripts/base-converter.js'
+import { calcRange } from './scripts/report.js'
+import * as concConverter from './lib/converter.js'
 
 const initializeContext = (context) => {
     Object.assign(context, {
@@ -25,6 +25,7 @@ const initializeContext = (context) => {
         baseConverter: report,
         calcRange: calcRange,
         concConverter: concConverter,
+        print: console.log,
         conditions: {
             temperature: 20,
             pressure: 101.3,
