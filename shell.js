@@ -12,6 +12,7 @@ import { volumeToNC } from './lib/air-volume.js'
 import { report } from './scripts/base-converter.js'
 import { calcRange } from './scripts/report.js'
 import * as concConverter from './lib/converter.js'
+import * as gs from './lib/gs2000.js'
 
 const initializeContext = (context) => {
     Object.assign(context, {
@@ -26,6 +27,7 @@ const initializeContext = (context) => {
         calcRange: calcRange,
         concConverter: concConverter,
         print: console.log,
+        gs: gs,
         conditions: {
             temperature: 20,
             pressure: 101.3,
