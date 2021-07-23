@@ -1,0 +1,339 @@
+<html> <head>
+    <title>Расчет ГС-2000</title>
+    <meta name="viewport" content="width=device-width" charset="utf-8">
+    <style type="text/css">
+    html {
+    background: #ddd;
+    height: 100%;
+}
+
+body {
+    margin: 0px;
+    color: #222;
+    background: #fcfcfc;
+    font: 12pt sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    margin: 10px;
+    flex-grow: 1;
+}
+
+section {
+    margin: 5px;
+}
+
+section header {
+    font-size: 12pt;
+    border-radius: 10px;
+}
+
+footer, header {
+    font-size: 18px;
+    padding: 6px;
+    background: #034769;
+    color: #fafafa;
+}
+
+footer {
+    text-align: center;
+    flex-shrink: 0;
+}
+
+label {
+    display: block;
+}
+
+input, select, button {
+    margin: 5px;
+    font-size: 12pt;
+    min-width: 150px;
+    border-color: #086fa1;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+}
+
+button {
+    color: #222;    
+    min-width: 30px;
+}
+
+#valves {
+    margin: 10px 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+#valves label {
+    margin: 0;
+    min-width: 30px;
+    width: 30px;
+    text-align: center;
+}
+
+.toggle_button {
+    margin: 0;
+    min-width: 30px;
+    width: 30px;
+}
+
+.valves {
+    flex: 1 1 auto;
+    max-width: 50px;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <p>Расчет режимов работы генератора ГС-2000</p>
+    </header>
+    <main>
+        <section id=input_date>
+            <header>Исходные данные</header>
+            <main>
+                <div>
+                    <label for=diluent>Газ-разбавитель:</label>
+                    <select id=diluent>
+                        <option>воздух</option>
+                        <option>азот</option>
+                    </select>
+                </div>
+                <div>
+                    <label for=source_conc>Концентрация исходной ГС, млн-1:</label>
+                    <input type=text id=source_conc pattern='\d+[\.]?\d*'>
+                </div>
+                <div>
+                    <label for=target_conc>Требуемая концентрация ГС на выходе, млн-1:</label>
+                    <input type=text id=target_conc pattern='\d+[\.]?\d*'>
+                </div>
+                <button id=btn_calc>Расчитать</button>
+            </main>
+        </section>
+        <section id=result>
+            <header>Результаты</header>
+            <main>
+                <label for="valve_number">Положение переключателей:</label>
+                <div id=valves>
+                    <div class=valves>
+                        <label for="v1">1</label>
+                        <input type="checkbox" id="v1" class="toggle_button">
+                    </div>
+                    <div class=valves>
+                        <label for="v2">2</label>
+                        <input type="checkbox" id="v2" class="toggle_button">
+                    </div>
+                    <div class=valves>
+                        <label for="v3">3</label>
+                        <input type="checkbox" id="v3" class="toggle_button">
+                    </div>
+                    <div class=valves>
+                        <label for="v4">4</label>
+                        <input type="checkbox" id="v4" class="toggle_button">
+                    </div>
+                    <div class=valves>
+                        <label for="v5">5</label>
+                        <input type="checkbox" id="v5" class="toggle_button">
+                    </div>
+                    <div class=valves>
+                        <label for="v6">6</label>
+                        <input type="checkbox" id="v6" class="toggle_button">
+                    </div>
+                    <div class=valves>
+                        <label for="v7">7</label>
+                        <input type="checkbox" id="v7" class="toggle_button">
+                    </div>
+                    <div class=valves>
+                        <label for="v8">8</label>
+                        <input type="checkbox" id="v8" class="toggle_button">
+                    </div>
+                    <div class=valves>
+                        <label for="v9">9</label>
+                        <input type="checkbox" id="v9" class="toggle_button">
+                    </div>
+                    <div class=valves>
+                        <label for="v10">10</label>
+                        <input type="checkbox" id="v10" class="toggle_button">
+                    </div>
+                </div>
+                <div>
+                    <label for="result_conc">Расчетная концентрация ГС на выходе, млн-1:</label>
+                    <input type="text" id="result_conc" disabled>
+                </div>
+             </main>     
+        </section>
+    </main>
+    <footer>
+        <p>Ермолаев Александр Викторович (e-mail: ave6990@ya.ru) ©</p>
+    </footer>
+</body>
+
+<script>
+/* Коэффициенты разбавления (паспортные значения) */
+const coefficients = {'воздух': [1176, 513, 253, 134, 70.4, 46.8, 36.3, 24.3, 14, 10.5],
+    'азот': [1196, 522, 267, 136, 71.6, 47.6, 36.9, 24.7, 14.2, 10.7],
+}
+
+const get_valves = () => {
+    let valves = []
+
+    for (let i = 1; i <= 10; i++) {
+        valves.push(document.getElementById(`v${i}`))
+    }
+    return valves
+}
+
+/* Массив переключателей клапанов */
+const valves = get_valves()
+
+valves.forEach( (valve) => {
+    valve.addEventListener("change", (event) => {
+        const states = read_valves_states()
+        const in_data = readData()
+        const out_data = r_calculate({coeff: in_data.coeff, 
+            source_conc: in_data.source_conc, 
+            valves: states,
+        })
+        displayResults(out_data)
+    })
+})
+
+const calculate = ({coeff, source_conc, target_conc}) => {
+    let temp_coeff = [...coeff]
+    let target_k = source_conc / target_conc
+    let diff = source_conc
+    let k_list = []
+
+    while (temp_coeff.length > 1) {
+        let k = getClosest(target_k, temp_coeff)
+        temp_coeff.splice(temp_coeff.indexOf(k), 1)
+        let res_k = calc_k([...k_list, k])
+        let res_conc = source_conc / res_k
+
+        if (Math.abs(res_conc - target_conc) < diff) {
+            diff = Math.abs(res_conc - target_conc)
+            k_list.push(k)
+            target_k = source_conc / (target_conc - res_conc)
+        } else {
+            temp_coeff = []
+        }
+    }
+
+    const res = source_conc / calc_k(k_list)
+    const index_list = k_list.map( (val) => {
+        return coeff.indexOf(val) + 1
+    } )
+
+    return { conc: res, valves: index_list, }
+}
+
+const r_calculate = ( {coeff, source_conc, valves} ) => {
+    if (valves.length < 1) {
+        return { conc: 0,
+            valves: [],
+        }
+    }
+    const k_list = valves.map( (val) => {
+        return coeff[val - 1]
+    } )
+
+    return { conc: source_conc / calc_k(k_list),
+        valves: valves,
+    }
+}
+
+/* Расчет коэффициента разбавления, при включении
+нескольких клапанов */
+const calc_k = (list) => {
+    const divider = list.map( (val) => {
+        return 1 / (val -1)
+    } )
+    .reduce( (a, b) => {
+        return a + b
+    } )
+
+    return 1 / divider + 1
+}
+
+/* Возвращает значение из массива `list` ближайшее большее
+заданному значению `value` */
+const getClosest = (value, list) => {
+    let temp_list = [...list]
+
+    const sort_func = (a, b) => {
+        if (Math.abs(a - value) > Math.abs(b - value)) {
+            return 1
+        }
+        if (Math.abs(a - value) < Math.abs(b - value)) {
+            return -1
+        }
+        else {
+            return 0
+        }
+    }
+
+    temp_list.sort(sort_func)
+
+    const filtered_list = temp_list.filter( (val) => {
+        if (val >= value) {
+            return true
+        }
+
+        return false
+    } )
+
+    if (filtered_list.length == 0) {
+        return list[0]
+    }
+
+    return filtered_list[0]
+}
+
+const readData = () => {
+    const coeff = coefficients[document.getElementById('diluent').value]
+    const source_conc = parseFloat(document.getElementById('source_conc').value.replace(',', '.'))
+    const target_conc = parseFloat(document.getElementById('target_conc').value.replace(',', '.'))
+    return { coeff: coeff,
+        source_conc: source_conc,
+        target_conc: target_conc,
+    }
+}
+
+document.getElementById('btn_calc').addEventListener('click', (event) => {
+    clear_valves()
+    const in_data = readData()
+    const out_data = calculate(in_data)
+    displayResults(out_data)
+} )
+
+const displayResults = (data) => {
+    document.getElementById('result_conc').value = data.conc
+    data.valves.forEach( (valve) => {
+        valves[valve - 1].checked = true
+    } )
+}
+
+const clear_valves = () => {
+    valves.forEach( (valve) => {
+        valve.checked = false
+    })
+}
+
+const read_valves_states = () => {
+    const active_valves = valves.map( (valve, i) => {
+        if (valve.checked == true) {
+            return i + 1
+        }
+    })
+    return active_valves.filter( (val) => {
+        if (val) {
+            return val
+        }
+    } )
+}
+</script>
+</html>
