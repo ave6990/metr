@@ -1,101 +1,107 @@
 <html> <head>
-    <title>Расчет ГС-2000</title>
+    <title>Расчет ГС-2000 v1.1.0</title>
     <meta name="viewport" content="width=device-width" charset="utf-8">
     <style type="text/css">
-    html {
-    background: #ddd;
-    height: 100%;
-}
+        html {
+            background: #ddd;
+            height: 100%;
+        }
 
-body {
-    margin: 0px;
-    color: #222;
-    background: #fcfcfc;
-    font: 12pt sans-serif;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
+        body {
+            margin: 0px;
+            color: #222;
+            background: #fcfcfc;
+            font: 12pt sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-main {
-    margin: 10px;
-    flex-grow: 1;
-}
+        main {
+            margin: 10px;
+            flex-grow: 1;
+        }
 
-section {
-    margin: 5px;
-}
+        section {
+            margin: 5px;
+        }
 
-section header {
-    font-size: 12pt;
-    border-radius: 10px;
-}
+        section header {
+            font-size: 12pt;
+            border-radius: 10px;
+        }
 
-footer, header {
-    font-size: 18px;
-    padding: 6px;
-    background: #034769;
-    color: #fafafa;
-}
+        footer, header {
+            font-size: 18px;
+            padding: 6px;
+            background: #034769;
+            color: #fafafa;
+        }
 
-footer {
-    text-align: center;
-    flex-shrink: 0;
-}
+        footer {
+            text-align: center;
+            flex-shrink: 0;
+        }
 
-label {
-    display: block;
-}
+        label {
+            display: block;
+        }
 
-input, select, button {
-    margin: 5px;
-    font-size: 12pt;
-    min-width: 150px;
-    border-color: #086fa1;
-    border-style: solid;
-    border-width: 1px;
-    border-radius: 5px;
-}
+        input, select, button {
+            margin: 5px;
+            font-size: 12pt;
+            border-color: #086fa1;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 5px;
+        }
 
-button {
-    color: #222;    
-    min-width: 30px;
-}
+        button {
+            color: #222;
+        }
 
-#valves {
-    margin: 10px 0;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-}
+        #valves {
+            margin: 10px 0;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+        }
 
-#valves label {
-    margin: 0;
-    min-width: 30px;
-    width: 30px;
-    text-align: center;
-}
+        #valves label {
+            margin: 0;
+            width: 30px;
+            text-align: center;
+        }
 
-.toggle_button {
-    margin: 0;
-    min-width: 30px;
-    width: 30px;
-}
+        .toggle_button {
+            margin: 0;
+            width: 30px;
+        }
 
-.valves {
-    flex: 1 1 auto;
-    max-width: 50px;
-}
+        .valves {
+            flex: 1 1 auto;
+            max-width: 50px;
+        }
+
+        .warning {
+            background-color: yellow;
+        }
     </style>
 </head>
 <body>
     <header>
-        <p>Расчет режимов работы генератора ГС-2000</p>
+        <p>Расчет режимов работы генератора ГС-2000 зав. № 58-2-21</p>
     </header>
     <main>
         <section id=input_date>
             <header>Исходные данные</header>
             <main>
+                <div >
+                    <label for=diluent>Целевой компонент:</label>
+                    <select id=component>
+                        <option value="none" default>не выбран</option>
+                    </select>
+                </div>
                 <div>
                     <label for=diluent>Газ-разбавитель:</label>
                     <select id=diluent>
@@ -104,12 +110,21 @@ button {
                     </select>
                 </div>
                 <div>
-                    <label for=source_conc>Концентрация исходной ГС, млн-1:</label>
+                    <label for=source_conc>Концентрация исходной ГС:</label>
                     <input type=text id=source_conc pattern='\d+[\.]?\d*'>
+                    <select id="source_unit" >
+                        <option value="ppm">ppm</option>
+                        <option value="%">%</option>
+                    </select>
                 </div>
                 <div>
-                    <label for=target_conc>Требуемая концентрация ГС на выходе, млн-1:</label>
+                    <label for=target_conc>Требуемая концентрация ГС на выходе:</label>
                     <input type=text id=target_conc pattern='\d+[\.]?\d*'>
+                    <select id="target_unit" >
+                        <option value="ppm">ppm</option>
+                        <option value="%">%</option>
+                        <option value="mg/m^3">mg/m^3</option>
+                    </select>
                 </div>
                 <button id=btn_calc>Расчитать</button>
             </main>
@@ -161,15 +176,16 @@ button {
                     </div>
                 </div>
                 <div>
-                    <label for="result_conc">Расчетная концентрация ГС на выходе, млн-1:</label>
+                    <label for="result_conc">Расчетная концентрация ГС на выходе:</label>
                     <input type="text" id="result_conc" disabled>
                 </div>
              </main>     
         </section>
+        <section id="info">
+        </section>
     </main>
     <footer>
-        <p>Ермолаев Александр Викторович ©<br>
-        e-mail: ave6990@ya.ru </p>
+        <p>Ермолаев Александр Викторович ©</p>
     </footer>
 </body>
 
@@ -178,6 +194,38 @@ button {
 const coefficients = {'воздух': [1176, 513, 253, 134, 70.4, 46.8, 36.3, 24.3, 14, 10.5],
     'азот': [1196, 522, 267, 136, 71.6, 47.6, 36.9, 24.7, 14.2, 10.7],
 }
+
+const molar_mass = {
+    N2: 28.016, NH3: 17.031, Ar: 39.944, C2H2: 26.04,
+    C3H6O: 58.08, C4H10: 58.12, C4H9OH: 74.12, H2O: 18.016,
+    H2: 2.0156, air: 28.96, C6H14: 86.17, He: 4.003,
+    C7H16: 100.19, CO2: 44.01, C10H22: 142.30, C12H10: 154.08,
+    C12H10O: 168.8, CH2Cl2: 84.94, C4H10O: 74.12, N2O: 44.016,
+    HJ: 127.93, O2: 32, Kr: 83.7, Xe: 131.3, CH4: 16.04,
+    CH5N: 31.06, CH3OH: 32.04, Ne: 20.183, NOCl: 65.465,
+    O3: 48.00, NO: 30.008, CO: 28.01, C8H18: 114.22,
+    C5H12: 72.14, C3H8: 44.09, C3H6: 42.08, H2Se: 80.968,
+    SO2: 64.06, SO3: 80.06, H2S: 34.08, PH3: 34.04,
+    CF3Cl: 137.40, CF2Cl2: 120.92, CFCl3: 114.47, F2: 38,
+    SiF4: 104.06, CH3F: 34.03, Cl2: 70.914, HCl: 36.465,
+    CH3Cl: 50.49, CHCl3: 119.39, C2N2: 52.04, HCN: 27.026,
+    C2H6: 30.07, C2H7N: 45.08, C2H4: 28.05, C2H5OH: 46.069,
+    C2H5Cl: 64.52, CH3SH: 48.11, CS2: 76.1407, CH3OCH3: 46.069,
+    C2H4O: 44.053,
+}
+
+const molar_volume = {
+    'воздух': 24.06,
+    'азот': 24.04,
+}
+
+const components = ['NO', 'NO2', 'N2O', 'NH3', 'H2', 'H2S', 'SO2', 
+    'O2', 'CO', 'CO2', 'CS2', 'CH4', 'C2H6', 'C3H8', 'C4H10',
+    'C5H12', 'C6H14', 'CH3OH', 'CH3SH', 'CH3OCH3', 'C2H5OH',
+    'C2H4O']
+
+const lel = {C3H8: 17000, C3H6: 20000, C4H10: 13000, C5H12: 15000, C6H14: 10000,
+    C6H6: 12000, C2H4: 23000, C2H2: 23000, C2H6: 25000, H2: 40000, H2S: 40000}
 
 const get_valves = () => {
     let valves = []
@@ -199,9 +247,19 @@ valves.forEach( (valve) => {
             source_conc: in_data.source_conc, 
             valves: states,
         })
+        out_data.target_unit = in_data.target_unit
+        out_data.diluent = in_data.diluent
+        out_data.component = in_data.component
         displayResults(out_data)
     })
 })
+
+components.forEach( (c) => {
+    let option = document.createElement('option')
+    option.value = c
+    option.text = c
+    document.getElementById('component').append(option)
+} )
 
 const calculate = ({coeff, source_conc, target_conc}) => {
     let temp_coeff = [...coeff]
@@ -245,6 +303,29 @@ const r_calculate = ( {coeff, source_conc, valves} ) => {
     return { conc: source_conc / calc_k(k_list),
         valves: valves,
     }
+}
+
+/* Округление результата (~ на 2 порядка точнее погрешности генератора) */
+const res_round = (val) => {
+    let exp = Math.log10(val)
+    
+    if (exp > 0) {
+        exp = Math.ceil(exp)
+    } else {
+        exp = Math.floor(exp)
+    }
+
+    if (exp < 0) {
+        exp = exp - 3
+    } else {
+        exp = exp - 5
+    }
+
+    if (exp < 0) {
+        return Math.round(val * (10 ** Math.abs(exp))) / (10 ** Math.abs(exp))
+    }
+
+    return Math.round(val)
 }
 
 /* Расчет коэффициента разбавления, при включении
@@ -295,12 +376,62 @@ const getClosest = (value, list) => {
 }
 
 const readData = () => {
-    const coeff = coefficients[document.getElementById('diluent').value]
-    const source_conc = parseFloat(document.getElementById('source_conc').value.replace(',', '.'))
-    const target_conc = parseFloat(document.getElementById('target_conc').value.replace(',', '.'))
-    return { coeff: coeff,
+    warning(' ')
+    const diluent = document.getElementById('diluent').value
+    const source_unit = document.getElementById('source_unit').value
+    let target_unit = document.getElementById('target_unit').value
+    const component = document.getElementById('component').value
+    let source_conc = parseFloat(document.getElementById('source_conc').value.replace(',', '.'))
+    let target_conc = parseFloat(document.getElementById('target_conc').value.replace(',', '.'))
+
+    if (source_unit == '%') {
+        source_conc = source_conc * 10000
+    }
+
+    if (source_conc > 20000) {
+        warning('Содержание целевого компонента в исходной смеси не должно превышать 2 % об. (20000 млн<sup>-1</sup>)!')
+        source_conc = 20000
+    }
+
+    if (target_unit == '%') {
+        target_conc = target_conc * 10000
+    } else if (target_unit == 'mg/m^3') {
+        if (component == 'none') {
+            warning('Для пересчета концентрации в мг/м<sup>3</sup> необходимо выбрать целевой компонент!')
+            target_unit = 'ppm'
+            document.getElementById('target_unit').value = 'ppm'
+        } else {
+            target_conc = target_conc * molar_volume[diluent] / molar_mass[component]
+        }
+    }
+
+    const max_conc = res_round(source_conc / calc_k(coefficients[diluent]))
+    const min_conc = res_round(source_conc / coefficients[diluent][0])
+    if (target_conc > max_conc) {
+        target_conc = max_conc
+        warning(`Концентрация ГС на выходе не может быть больше ${target_conc} ${target_unit}!`)
+    }
+    if (target_conc < min_conc) {
+        target_conc = min_conc
+        warning(`Концентрация ГС на выходе не может быть меньше ${target_conc} ${target_unit}!`)
+    }
+
+    if (lel[component]) {
+        const lel05 = lel[component] / 2
+        if (source_conc > lel05) {
+            warning(`Содержание целевого компонента в исходной ГС не должно превышать 50 % НКПР (${component} - ${res_round(lel05 / 10000)} % об.)!`)
+            source_conc = lel05
+        }
+    }
+
+    return {
+        component: component,
+        diluent: diluent,
+        coeff: coefficients[diluent],
         source_conc: source_conc,
+        source_unit: source_unit,
         target_conc: target_conc,
+        target_unit: target_unit,
     }
 }
 
@@ -308,11 +439,24 @@ document.getElementById('btn_calc').addEventListener('click', (event) => {
     clear_valves()
     const in_data = readData()
     const out_data = calculate(in_data)
+    out_data.target_unit = in_data.target_unit
+    out_data.diluent = in_data.diluent
+    out_data.component = in_data.component
+
     displayResults(out_data)
 } )
 
+const warning = (message) => {
+    document.getElementById('info').innerHTML = `<p class="warning">${message}</p>`
+}
+
 const displayResults = (data) => {
-    document.getElementById('result_conc').value = data.conc
+    if (data.target_unit == '%') {
+        data.conc = data.conc / 10000
+    } else if (data.target_unit == 'mg/m^3') {
+        data.conc = data.conc * molar_mass[data.component] / molar_volume[data.diluent]
+    }
+    document.getElementById('result_conc').value = `${res_round(data.conc)} ${data.target_unit}`
     data.valves.forEach( (valve) => {
         valves[valve - 1].checked = true
     } )
