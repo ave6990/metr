@@ -254,6 +254,81 @@ valves.forEach( (valve) => {
     })
 })
 
+const readSourceConc = () => {
+    warning(' ')
+    const source_unit = document.getElementById('source_unit').value
+    let source_conc = parseFloat(document.getElementById('source_conc').value.replace(',', '.'))
+    const component = document.getElementById('component').value
+    let k = 1
+
+    if (source_unit == '%') {
+        k = 10000
+    }
+
+    source_conc *= k
+
+    if (source_conc > 20000) {
+        warning('Содержание целевого компонента в исходной смеси не должно превышать 2 % об. (20000 млн<sup>-1</sup>)!')
+        source_conc = 20000
+    }
+
+    if (lel[component]) {
+        const lel05 = lel[component] / 2
+        if (source_conc > lel05) {
+            warning(`Содержание целевого компонента в исходной ГС не должно превышать 50 % НКПР (${component} - ${res_round(lel05 / 10000)} % об.)!`)
+            source_conc = lel05
+        }
+    }
+
+    document.getElementById('source_conc').value = source_conc / k
+    
+    return source_conc
+}
+
+const readTargetConc = () => {
+    warning(' ')
+    const source_conc = readSourceConc()
+    let target_unit = document.getElementById('target_unit').value
+    const diluent = document.getElementById('diluent').value
+    const component = document.getElementById('component').value
+    let target_conc = parseFloat(document.getElementById('target_conc').value.replace(',', '.'))
+    let k = 1
+
+    if (target_unit == '%') {
+        k = 10000
+    } else if (target_unit == 'mg/m^3') {
+        if (component == 'none') {
+            warning('Для пересчета концентрации в мг/м<sup>3</sup> необходимо выбрать целевой компонент!')
+            target_unit = 'ppm'
+            document.getElementById('target_unit').value = target_unit
+        } else {
+            k = molar_volume[diluent] / molar_mass[component]
+        }
+    }
+
+    target_conc *= k
+
+    const max_conc = res_round(source_conc / calc_k(coefficients[diluent]))
+    const min_conc = res_round(source_conc / coefficients[diluent][0])
+    if (target_conc > max_conc) {
+        target_conc = max_conc
+        warning(`Концентрация ГС на выходе не может быть больше ${target_conc} ${target_unit}!`)
+    }
+    if (target_conc < min_conc) {
+        target_conc = min_conc
+        warning(`Концентрация ГС на выходе не может быть меньше ${target_conc} ${target_unit}!`)
+    }
+
+    document.getElementById('target_conc').value = res_round(target_conc / k)
+
+    return target_conc
+}
+
+document.getElementById('source_conc').addEventListener('change', readSourceConc)
+document.getElementById('source_unit').addEventListener('change', readSourceConc)
+document.getElementById('target_conc').addEventListener('change', readTargetConc)
+document.getElementById('target_unit').addEventListener('change', readTargetConc)
+
 components.forEach( (c) => {
     let option = document.createElement('option')
     option.value = c
@@ -381,48 +456,8 @@ const readData = () => {
     const source_unit = document.getElementById('source_unit').value
     let target_unit = document.getElementById('target_unit').value
     const component = document.getElementById('component').value
-    let source_conc = parseFloat(document.getElementById('source_conc').value.replace(',', '.'))
-    let target_conc = parseFloat(document.getElementById('target_conc').value.replace(',', '.'))
-
-    if (source_unit == '%') {
-        source_conc = source_conc * 10000
-    }
-
-    if (source_conc > 20000) {
-        warning('Содержание целевого компонента в исходной смеси не должно превышать 2 % об. (20000 млн<sup>-1</sup>)!')
-        source_conc = 20000
-    }
-
-    if (target_unit == '%') {
-        target_conc = target_conc * 10000
-    } else if (target_unit == 'mg/m^3') {
-        if (component == 'none') {
-            warning('Для пересчета концентрации в мг/м<sup>3</sup> необходимо выбрать целевой компонент!')
-            target_unit = 'ppm'
-            document.getElementById('target_unit').value = 'ppm'
-        } else {
-            target_conc = target_conc * molar_volume[diluent] / molar_mass[component]
-        }
-    }
-
-    const max_conc = res_round(source_conc / calc_k(coefficients[diluent]))
-    const min_conc = res_round(source_conc / coefficients[diluent][0])
-    if (target_conc > max_conc) {
-        target_conc = max_conc
-        warning(`Концентрация ГС на выходе не может быть больше ${target_conc} ${target_unit}!`)
-    }
-    if (target_conc < min_conc) {
-        target_conc = min_conc
-        warning(`Концентрация ГС на выходе не может быть меньше ${target_conc} ${target_unit}!`)
-    }
-
-    if (lel[component]) {
-        const lel05 = lel[component] / 2
-        if (source_conc > lel05) {
-            warning(`Содержание целевого компонента в исходной ГС не должно превышать 50 % НКПР (${component} - ${res_round(lel05 / 10000)} % об.)!`)
-            source_conc = lel05
-        }
-    }
+    let source_conc = readSourceConc()
+    let target_conc = readTargetConc()
 
     return {
         component: component,
