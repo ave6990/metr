@@ -1,5 +1,5 @@
 <html> <head>
-    <title>Расчет ГС-2000 v1.1.0</title>
+    <title>Расчет ГС-2000 v1.1.2</title>
     <meta name="viewport" content="width=device-width" charset="utf-8">
     <style type="text/css">
         html {
@@ -75,7 +75,35 @@
 
         .toggle_button {
             margin: 0;
+            height: 60px;
             width: 30px;
+            vertical-align: center;
+            background: #fff;
+            border: 1px solid #086fa1;
+            border-radius: 15px;
+            outline: none;
+            position: relative;
+            display: inline-block;
+            appearance: none;
+            -moz-appearance: none;
+        }
+
+        .toggle_button::after {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            left: 1px;
+            top: 2px;
+            width: 26px;
+            height: 26px;
+            background-color: gray;
+            border-radius: 50%;
+            transform: translateY(0);
+        }
+
+        .toggle_button:checked::after {
+            transform: translateY(calc(100% + 2px));
+            background-color: red;
         }
 
         .valves {
@@ -294,6 +322,7 @@ const readTargetConc = () => {
     let target_conc = parseFloat(document.getElementById('target_conc').value.replace(',', '.'))
     let k = 1
 
+    console.info(`Заданная концентрация:\n\t${target_conc} ${target_unit}`)
     if (target_unit == '%') {
         k = 10000
     } else if (target_unit == 'mg/m^3') {
@@ -320,6 +349,7 @@ const readTargetConc = () => {
     }
 
     document.getElementById('target_conc').value = res_round(target_conc / k)
+    console.info(`\t${target_conc} ppm`)
 
     return target_conc
 }
@@ -486,11 +516,13 @@ const warning = (message) => {
 }
 
 const displayResults = (data) => {
+    console.info(`Расчетная концентрация:\n\t${data.conc} ppm`)
     if (data.target_unit == '%') {
         data.conc = data.conc / 10000
     } else if (data.target_unit == 'mg/m^3') {
         data.conc = data.conc * molar_mass[data.component] / molar_volume[data.diluent]
     }
+    console.info(`\t${data.conc} ${data.target_unit}`)
     document.getElementById('result_conc').value = `${res_round(data.conc)} ${data.target_unit}`
     data.valves.forEach( (valve) => {
         valves[valve - 1].checked = true
