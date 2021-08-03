@@ -1,5 +1,5 @@
 <html> <head>
-    <title>Расчет ГС-2000 v1.1.2</title>
+    <title>Расчет ГС-2000 v2.0.0</title>
     <meta name="viewport" content="width=device-width" charset="utf-8">
     <style type="text/css">
         html {
@@ -133,8 +133,8 @@
                 <div>
                     <label for=diluent>Газ-разбавитель:</label>
                     <select id=diluent>
-                        <option>воздух</option>
-                        <option>азот</option>
+                        <option value="air">воздух</option>
+                        <option value="n2">азот</option>
                     </select>
                 </div>
                 <div>
@@ -219,8 +219,8 @@
 
 <script>
 /* Коэффициенты разбавления (паспортные значения) */
-const coefficients = {'воздух': [1176, 513, 253, 134, 70.4, 46.8, 36.3, 24.3, 14, 10.5],
-    'азот': [1196, 522, 267, 136, 71.6, 47.6, 36.9, 24.7, 14.2, 10.7],
+const coefficients = {'air': [1176, 513, 253, 134, 70.4, 46.8, 36.3, 24.3, 14, 10.5],
+    'n2': [1196, 522, 267, 136, 71.6, 47.6, 36.9, 24.7, 14.2, 10.7],
 }
 
 const molar_mass = {
@@ -243,8 +243,8 @@ const molar_mass = {
 }
 
 const molar_volume = {
-    'воздух': 24.06,
-    'азот': 24.04,
+    'air': 24.06,
+    'n2': 24.04,
 }
 
 const components = ['NO', 'NO2', 'N2O', 'NH3', 'H2', 'H2S', 'SO2', 
@@ -271,16 +271,136 @@ valves.forEach( (valve) => {
     valve.addEventListener("change", (event) => {
         const states = read_valves_states()
         const in_data = readData()
-        const out_data = r_calculate({coeff: in_data.coeff, 
+        const out_data = reCalculate({coeff: in_data.coeff, 
             source_conc: in_data.source_conc, 
             valves: states,
         })
         out_data.target_unit = in_data.target_unit
         out_data.diluent = in_data.diluent
         out_data.component = in_data.component
+        out_data.conc += h2sCorrection(out_data)
         displayResults(out_data)
     })
 })
+
+const calculate = ({ coeff, source_conc, target_conc }) => {
+    let temp_coeff = [...coeff]
+    let variants = {}
+    let res = 0
+    let k_list = []
+
+    checkInData({ source_conc })
+
+    while (temp_coeff.length > 0) {
+        const target_k = source_conc / (target_conc - res)
+        temp_coeff = spliceList(target_k, temp_coeff)
+
+        const k = temp_coeff.pop()
+        const temp_res = source_conc / calcCoefficient([k, ...k_list])
+
+        if (sortFunc(target_conc)(res, temp_res) > 0 || res == 0) {
+            if (temp_res > target_conc) {
+                variants[temp_res] = [k, ...k_list]
+            } else {
+                k_list.push(k)
+                res = temp_res
+            }
+        }
+    }
+
+    if (k_list.length > 0) {
+        variants[res] = [...k_list]
+    }
+
+    const results = Object.keys(variants).map((val) => parseFloat(val))
+    res = results.sort(sortFunc(target_conc))[0]
+    k_list = variants[res]
+
+    const index_list = k_list.map( (val) => {
+        return coeff.indexOf(val) + 1
+    } )
+
+    return {conc: res, valves: index_list, }
+}
+
+const checkInData = ({source_conc}) => {
+    if (source_conc > 20000) {
+        throw new GS2000Error('Содержание целевого компонента в исходной ГС не должно превышать 2 % (20000 ppm)!')
+    }
+
+    if (source_conc < 0) {
+        throw new GS2000Error('Содержание целевого компонента должно быть выражено положительным числом!')
+    }
+    
+}
+
+/* Расчет коэффициента разбавления, при включении
+нескольких клапанов. */
+const calcCoefficient = (list) => {
+    const divider = list.map( (val) => {
+        return 1 / (val -1)
+    } )
+    .reduce( (a, b) => {
+        return a + b
+    } )
+
+    return 1 / divider + 1
+}
+
+/* Функция сравнения чисел по признаку их близости к некоторому заданному значению. */
+const sortFunc = (value) => {
+    return (a, b) => {
+        if (Math.abs(a - value) > Math.abs(b - value)) {
+            return 1
+        }
+        if (Math.abs(a - value) < Math.abs(b - value)) {
+            return -1
+        }
+        else {
+            return 0
+        }
+    }
+}
+
+/* Удаляет из списка значения меньшие заданного. */
+const spliceList = (value, list) => {
+    let temp_list = [...list]
+
+    const [first, second] = temp_list.sort(sortFunc(value))
+    const index = list.indexOf(Math.min(first, second))
+
+    if (index >= 0) {
+        temp_list = [...list]
+        temp_list.splice(index + 1)
+    }
+
+    return temp_list
+}
+
+/* Обратный расчет - концентрация расчитывается по номерам клапанов. */
+const reCalculate = ( {coeff, source_conc, valves} ) => {
+    checkInData({source_conc})
+
+    const k_list = valves.map( (val) => {
+        return coeff[val - 1]
+    } )
+
+    if (k_list.length < 1) {
+        return { conc: 0, valves: [] }
+    }
+
+    return { conc: source_conc / calcCoefficient(k_list),
+        valves: valves,
+    }
+}
+
+const h2sCorrection = ({conc, component}) => {
+    if (component = 'H2S' && conc >= 0.005 && conc <= 0.01) {
+        console.info(`H2S correction:\n\t${conc} + 0.00025`)
+        return 0.00025
+    }
+    return 0
+}
 
 const readSourceConc = () => {
     warning(' ')
@@ -322,6 +442,7 @@ const readTargetConc = () => {
     let target_conc = parseFloat(document.getElementById('target_conc').value.replace(',', '.'))
     let k = 1
 
+    console.info('********Calculate*********')
     console.info(`Заданная концентрация:\n\t${target_conc} ${target_unit}`)
     if (target_unit == '%') {
         k = 10000
@@ -337,7 +458,7 @@ const readTargetConc = () => {
 
     target_conc *= k
 
-    const max_conc = res_round(source_conc / calc_k(coefficients[diluent]))
+    const max_conc = res_round(source_conc / calcCoefficient(coefficients[diluent]))
     const min_conc = res_round(source_conc / coefficients[diluent][0])
     if (target_conc > max_conc) {
         target_conc = max_conc
@@ -366,52 +487,12 @@ components.forEach( (c) => {
     document.getElementById('component').append(option)
 } )
 
-const calculate = ({coeff, source_conc, target_conc}) => {
-    let temp_coeff = [...coeff]
-    let target_k = source_conc / target_conc
-    let diff = source_conc
-    let k_list = []
-
-    while (temp_coeff.length > 1) {
-        let k = getClosest(target_k, temp_coeff)
-        temp_coeff.splice(temp_coeff.indexOf(k), 1)
-        let res_k = calc_k([...k_list, k])
-        let res_conc = source_conc / res_k
-
-        if (Math.abs(res_conc - target_conc) < diff) {
-            diff = Math.abs(res_conc - target_conc)
-            k_list.push(k)
-            target_k = source_conc / (target_conc - res_conc)
-        } else {
-            temp_coeff = []
-        }
-    }
-
-    const res = source_conc / calc_k(k_list)
-    const index_list = k_list.map( (val) => {
-        return coeff.indexOf(val) + 1
-    } )
-
-    return { conc: res, valves: index_list, }
-}
-
-const r_calculate = ( {coeff, source_conc, valves} ) => {
-    if (valves.length < 1) {
-        return { conc: 0,
-            valves: [],
-        }
-    }
-    const k_list = valves.map( (val) => {
-        return coeff[val - 1]
-    } )
-
-    return { conc: source_conc / calc_k(k_list),
-        valves: valves,
-    }
-}
-
 /* Округление результата (~ на 2 порядка точнее погрешности генератора) */
 const res_round = (val) => {
+    if (val == 0) {
+        return 0
+    }
+    
     let exp = Math.log10(val)
     
     if (exp > 0) {
@@ -431,53 +512,6 @@ const res_round = (val) => {
     }
 
     return Math.round(val)
-}
-
-/* Расчет коэффициента разбавления, при включении
-нескольких клапанов */
-const calc_k = (list) => {
-    const divider = list.map( (val) => {
-        return 1 / (val -1)
-    } )
-    .reduce( (a, b) => {
-        return a + b
-    } )
-
-    return 1 / divider + 1
-}
-
-/* Возвращает значение из массива `list` ближайшее большее
-заданному значению `value` */
-const getClosest = (value, list) => {
-    let temp_list = [...list]
-
-    const sort_func = (a, b) => {
-        if (Math.abs(a - value) > Math.abs(b - value)) {
-            return 1
-        }
-        if (Math.abs(a - value) < Math.abs(b - value)) {
-            return -1
-        }
-        else {
-            return 0
-        }
-    }
-
-    temp_list.sort(sort_func)
-
-    const filtered_list = temp_list.filter( (val) => {
-        if (val >= value) {
-            return true
-        }
-
-        return false
-    } )
-
-    if (filtered_list.length == 0) {
-        return list[0]
-    }
-
-    return filtered_list[0]
 }
 
 const readData = () => {
@@ -507,6 +541,7 @@ document.getElementById('btn_calc').addEventListener('click', (event) => {
     out_data.target_unit = in_data.target_unit
     out_data.diluent = in_data.diluent
     out_data.component = in_data.component
+    out_data.conc += h2sCorrection(out_data)
 
     displayResults(out_data)
 } )
@@ -522,7 +557,7 @@ const displayResults = (data) => {
     } else if (data.target_unit == 'mg/m^3') {
         data.conc = data.conc * molar_mass[data.component] / molar_volume[data.diluent]
     }
-    console.info(`\t${data.conc} ${data.target_unit}`)
+    console.info(`\t${data.conc} ${data.target_unit}\n\n`)
     document.getElementById('result_conc').value = `${res_round(data.conc)} ${data.target_unit}`
     data.valves.forEach( (valve) => {
         valves[valve - 1].checked = true
