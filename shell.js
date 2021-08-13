@@ -1,13 +1,12 @@
 /** Shell для выполнения метрологических расчетов.
- * @version 0.2.0
+ * @version 0.2.1
  * @author ave6990
  * @email ave6990@ya.ru
+ * @license: MIT
  */
 
 import repl from 'repl'
-/** @debug не работает `import * from './metrology.js'` */
-import { rangeConverter, relativeError, round, discrete, 
-    reducedError, sko, average, precision } from './lib/metrology.js'
+import * as metrology from './lib/metrology.js'
 import { AirVolume } from './lib/air-volume.js'
 import { report } from './scripts/base-converter.js'
 import { calcRange } from './scripts/report.js'
@@ -17,20 +16,36 @@ import * as am5 from './scripts/am5.js'
 
 const initializeContext = (context) => {
     Object.assign(context, {
-        rangeConverter: rangeConverter,
-        relativeError: relativeError,
-        reducedError: reducedError,
-        sko: sko,
-        average: average,
-        precision: precision,
-        round: round,
-        discrete: discrete,
+        rangeConverter: metrology.rangeConverter,
+        relativeError: metrology.relativeError,
+        reducedError: metrology.reducedError,
+        sko: metrology.sko,
+        average: metrology.average,
+        precision: metrology.precision,
+        round: metrology.round,
+        discrete: metrology.discrete,
         airVolume: AirVolume,
         baseConverter: report,
         calcRange: calcRange,
         concConverter: concConverter,
         print: console.log,
-        gs: gs,
+        gs: {
+            calc: (s_val, diluent) => {
+                return (val) => {
+                    return gs.calculate({coeff: gs.coefficients[diluent],
+                        source_conc: s_val,
+                        target_conc: val, } )
+                }
+            },
+            rCalc: (s_val, diluent) => {
+                return (valves) => {
+                    return gs.reCalculate( {coeff: gs.coefficients[diluent],
+                        source_conc: s_val,
+                        valves: valves,
+                    } )
+                }
+            },
+        },
         am5: am5,
         conditions: {
             temperature: 20,
