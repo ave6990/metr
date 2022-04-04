@@ -33,14 +33,14 @@ const initializeContext = (context) => {
             calc: (s_val, diluent) => {
                 return (val) => {
                     return gs.calculate({coeff: gs.coefficients[diluent],
-                        source_conc: s_val,
-                        target_conc: val, } )
+                        sourceConc: s_val,
+                        targetConc: val, } )
                 }
             },
             rCalc: (s_val, diluent) => {
                 return (valves) => {
                     return gs.reCalculate( {coeff: gs.coefficients[diluent],
-                        source_conc: s_val,
+                        sourceConc: s_val,
                         valves: valves,
                     } )
                 }
