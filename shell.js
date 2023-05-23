@@ -13,6 +13,7 @@ import { calcRange } from './scripts/report.js'
 import * as concConverter from './lib/converter.js'
 import * as gs from './lib/gs2000.js'
 import * as am5 from './scripts/am5.js'
+import * as midb from './models/midb.js'
 
 const initializeContext = (context) => {
     Object.assign(context, {
@@ -54,11 +55,12 @@ const initializeContext = (context) => {
             voltage: 220,
             frequency: 50,
         },
+        midb: midb,
     } )
 }
 
 const r = repl.start( {
-    prompt: 'metrology > ',
+    prompt: 'M> ',
 } ) 
 
 initializeContext(r.context)
@@ -66,5 +68,6 @@ r.on('reset', initializeContext)
 
 const print = r.context.console.log
 
+print('')
 print('Conditions:')
 print(r.context.conditions)
