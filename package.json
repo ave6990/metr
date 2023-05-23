@@ -21,5 +21,8 @@
     "url": "https://github.com/ave-student/metr/issues"
   },
   "homepage": "https://github.com/ave-student/metr#readme",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "sqlite3": "^5.1.6"
+  }
 }
