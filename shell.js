@@ -13,7 +13,7 @@ import { calcRange } from './scripts/report.js'
 import * as concConverter from './lib/converter.js'
 import * as gs from './lib/gs2000.js'
 import * as am5 from './scripts/am5.js'
-import * as midb from './models/midb.js'
+import { mi } from './models/midb.js'
 
 const initializeContext = (context) => {
     Object.assign(context, {
@@ -30,6 +30,14 @@ const initializeContext = (context) => {
         calcRange: calcRange,
         concConverter: concConverter,
         print: console.log,
+        aprint: async (data) => {
+            let res = await data
+            console.log(res)
+        },
+        getData: async (data) => {
+            const res = Object.assign({}, await data)
+            return res
+        },
         gs: {
             calc: (s_val, diluent) => {
                 return (val) => {
@@ -55,7 +63,7 @@ const initializeContext = (context) => {
             voltage: 220,
             frequency: 50,
         },
-        midb: midb,
+        mi: mi,
     } )
 }
 

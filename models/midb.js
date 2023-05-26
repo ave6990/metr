@@ -22,11 +22,16 @@ class MIdb {
             })
         } catch (err) {
             console.log('Connection Error!\n', err)
+        }
     }
 
-    async getCondition(date) {
+    async getCondition(date='2023-03-03') {
         return await this.db.all(`select * from conditions where date = '${date}'`)
     }
+}
+
+const queries = {
+    getConditions: `select * from conditions`
 }
 
 const mi = new MIdb()
