@@ -30,14 +30,6 @@ const initializeContext = (context) => {
         calcRange: calcRange,
         concConverter: concConverter,
         print: console.log,
-        aprint: async (data) => {
-            let res = await data
-            console.log(res)
-        },
-        getData: async (data) => {
-            const res = Object.assign({}, await data)
-            return res
-        },
         gs: {
             calc: (s_val, diluent) => {
                 return (val) => {
@@ -59,7 +51,7 @@ const initializeContext = (context) => {
         conditions: {
             temperature: 20,
             pressure: 101.3,
-            hummidity: 50,
+            humidity: 50,
             voltage: 220,
             frequency: 50,
         },
