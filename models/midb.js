@@ -17,8 +17,14 @@ class MIdb {
         }
     }
 
-    async getCondition(date='2023-03-03') {
-        return await this.db.all(`select * from conditions where date = '${date}'`)
+    async sql(query) {
+        let data
+
+        try {
+            return await this.db.all(query)
+        } catch (err) {
+            console.log(err)
+        }
     }
 }
 
