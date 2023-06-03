@@ -1,5 +1,5 @@
 /** Shell для выполнения метрологических расчетов.
- * @version 0.2.1
+ * @version 0.3.0
  * @author ave6990
  * @email ave6990@ya.ru
  * @license: MIT
@@ -11,7 +11,6 @@ import { AirVolume } from './lib/air-volume.js'
 import { report } from './scripts/base-converter.js'
 import { calcRange } from './scripts/report.js'
 import * as concConverter from './lib/converter.js'
-import * as gs from './lib/gs2000.js'
 import * as am5 from './scripts/am5.js'
 import { mi } from './models/midb.js'
 
@@ -30,30 +29,18 @@ const initializeContext = (context) => {
         calcRange: calcRange,
         concConverter: concConverter,
         print: console.log,
-        gs: {
-            calc: (s_val, diluent) => {
-                return (val) => {
-                    return gs.calculate({coeff: gs.coefficients[diluent],
-                        sourceConc: s_val,
-                        targetConc: val, } )
-                }
-            },
-            rCalc: (s_val, diluent) => {
-                return (valves) => {
-                    return gs.reCalculate( {coeff: gs.coefficients[diluent],
-                        sourceConc: s_val,
-                        valves: valves,
-                    } )
-                }
-            },
-        },
         am5: am5,
         conditions: {
+            id: 0,
+            date: new Date(),
             temperature: 20,
-            pressure: 101.3,
             humidity: 50,
+            pressure: 101.3,
             voltage: 220,
             frequency: 50,
+            other: null,
+            location: null,
+            comment: null
         },
         mi: mi,
     } )
@@ -70,5 +57,6 @@ const print = r.context.console.log
 
 print('')
 print('Conditions:')
+//r.context.conditions = await mi.sql('select * from conditions order by id desc limit 1')
 print(r.context.conditions)
 print('')
