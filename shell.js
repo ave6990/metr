@@ -8,10 +8,9 @@
 import repl from 'repl'
 import * as metrology from './lib/metrology.js'
 import { AirVolume } from './lib/air-volume.js'
+import * as date from './lib/date.js'
 import { report } from './scripts/base-converter.js'
-import { calcRange } from './scripts/report.js'
-import * as concConverter from './lib/converter.js'
-import * as am5 from './scripts/am5.js'
+import * as converter from './lib/converter.js'
 import { mi } from './models/midb.js'
 
 const initializeContext = (context) => {
@@ -26,10 +25,9 @@ const initializeContext = (context) => {
         discrete: metrology.discrete,
         airVolume: AirVolume,
         baseConverter: report,
-        calcRange: calcRange,
-        concConverter: concConverter,
+        converter: converter,
         print: console.log,
-        am5: am5,
+        date: date,
         conditions: {
             id: 0,
             date: new Date(),
