@@ -11,7 +11,7 @@ import { AirVolume } from './lib/air-volume.js'
 import * as date from './lib/date.js'
 import { report } from './scripts/base-converter.js'
 import * as converter from './lib/converter.js'
-import { mi } from './models/midb.js'
+import { mi, tsk } from './models/midb.js'
 
 const initializeContext = (context) => {
     Object.assign(context, {
@@ -41,6 +41,7 @@ const initializeContext = (context) => {
             comment: null
         },
         mi: mi,
+        tsk: tsk,
     } )
 }
 
