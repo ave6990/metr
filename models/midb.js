@@ -1,7 +1,7 @@
 import sqlite3 from 'sqlite3'
 import { open } from 'sqlite'
 
-class MIdb {
+class MYdb {
     constructor(dbPath='data/midb.db') {
         this.connect(dbPath)
     }
@@ -53,11 +53,23 @@ class MIdb {
     }
 }
 
-const mi = new MIdb()
-const tsk = new MIdb('data/personal.db')
-let tskQueries = {
-    task: 'select * from view_tasks',
-    add: 'insert into tasks'
+class MIdb extends MYdb {
+    constructor(dbPath='data/midb.db') {
+        super(dbPath)
+    }
+
+    async conditions(date) {
+        return await this.sql(`select * from conditions where date like '%${date}%'`)
+    }
 }
+
+class TasksDb extends MYdb {
+    constructor(dbPath='data/personal.db') {
+        super(dbPath)
+    }
+}
+
+const mi = new MIdb()
+const tsk = new TasksDb()
 
 export { mi, tsk }
