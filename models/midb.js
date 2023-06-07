@@ -51,6 +51,16 @@ class MYdb {
             console.log(err)
         }
     }
+
+    write(table, record) {
+        let query = `insert into ${table} values (${Object.values(record).join(', ')})`
+
+        try {
+            this.db.run(query)
+        } catch (err) {
+            console.log(err)
+        }
+    }
 }
 
 class MIdb extends MYdb {
@@ -60,6 +70,10 @@ class MIdb extends MYdb {
 
     async conditions(date) {
         return await this.sql(`select * from conditions where date like '%${date}%'`)
+    }
+
+    async verification(query) {
+        return await this.sql(`select * from verification where (id || mi_type) like '${query}'`)
     }
 }
 
