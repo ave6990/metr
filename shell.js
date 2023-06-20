@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 /** Shell для выполнения метрологических расчетов.
  * @version 0.3.0
  * @author ave6990
