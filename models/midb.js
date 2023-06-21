@@ -6,6 +6,7 @@ import fs from 'fs'
 class MYdb {
     constructor(dbPath='data/midb.db') {
         this.connect(dbPath)
+        this.q = []
         this._html = new htmlPage((cnt) => {
             fs.writeFile('view.html', cnt, (err) => {
                 if (err) {
@@ -19,7 +20,7 @@ class MYdb {
 
     async connect(filename) {
         try {
-            this.db = await open({
+            this._db = await open({
                 filename: filename,
                 driver: sqlite3.Database
             })
@@ -34,9 +35,17 @@ class MYdb {
 
     async sql(query) {
         try {
-            const data = await this.db.all(query)
+            const data = await this._db.all(query)
             this._html.write(data)
             return data
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    run(query) {
+        try {
+            this._db.run(query)
         } catch (err) {
             console.log(err)
         }
@@ -45,7 +54,7 @@ class MYdb {
     async tables() {
         const query = 'select type, name from sqlite_master where type = "table" or type = "view" order by type'
         try {
-            return await this.db.all(query)
+            return await this._db.all(query)
         } catch (err) {
             console.log(err)
         }
@@ -53,7 +62,7 @@ class MYdb {
 
     async record(table) {
         try {
-            const obj = await this.db.get(`select * from ${table} limit 1`)
+            const obj = await this._db.get(`select * from ${table} limit 1`)
             
             for (const field of await Object.keys(await obj)) {
                 obj[await field] = null
@@ -69,7 +78,7 @@ class MYdb {
         let query = `insert into ${table} values (${Object.values(record).join(', ')})`
 
         try {
-            this.db.run(query)
+            this._db.run(query)
         } catch (err) {
             console.log(err)
         }
@@ -87,6 +96,10 @@ class MIdb extends MYdb {
 
     async verification(query) {
         return await this.sql(`select * from verification where (id || mi_type) like '${query}'`)
+    }
+
+    async findMI(query) {
+
     }
 }
 
