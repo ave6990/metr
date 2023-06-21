@@ -1,9 +1,20 @@
 import sqlite3 from 'sqlite3'
 import { open } from 'sqlite'
+import { htmlPage } from '../lib/html-gen.js'
+import fs from 'fs'
 
 class MYdb {
     constructor(dbPath='data/midb.db') {
         this.connect(dbPath)
+        this._html = new htmlPage((cnt) => {
+            fs.writeFile('view.html', cnt, (err) => {
+                if (err) {
+                    console.log(err)
+                } else {
+                    console.log('The data wrote to the file.')
+                }
+            })
+        })
     }
 
     async connect(filename) {
@@ -23,7 +34,9 @@ class MYdb {
 
     async sql(query) {
         try {
-            return await this.db.all(query)
+            const data = await this.db.all(query)
+            this._html.write(data)
+            return data
         } catch (err) {
             console.log(err)
         }
@@ -38,7 +51,7 @@ class MYdb {
         }
     }
 
-    async record(table, id = 1) {
+    async record(table) {
         try {
             const obj = await this.db.get(`select * from ${table} limit 1`)
             
@@ -80,6 +93,10 @@ class MIdb extends MYdb {
 class TasksDb extends MYdb {
     constructor(dbPath='data/personal.db') {
         super(dbPath)
+    }
+
+    async tasks() {
+        return await this.sql(`select * from view_tasks where status != 'done'`)
     }
 }
 

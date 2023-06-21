@@ -13,8 +13,6 @@ import * as date from './lib/date.js'
 import { report } from './scripts/base-converter.js'
 import * as converter from './lib/converter.js'
 import { mi, tsk } from './models/midb.js'
-import { htmlPage } from './lib/html-gen.js'
-import fs from 'fs'
 
 const initializeContext = (context) => {
     Object.assign(context, {
@@ -45,15 +43,6 @@ const initializeContext = (context) => {
         },
         mi: mi,
         tsk: tsk,
-        html: new htmlPage((cnt) => {
-            fs.writeFile('view.html', cnt, (err) => {
-                if (err) {
-                    console.log(err)
-                } else {
-                    console.log('The data wrote to the file.')
-                }
-            })
-        }),
     } )
 }
 
