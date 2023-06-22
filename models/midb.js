@@ -35,12 +35,14 @@ class MYdb {
 
     async sql(query) {
         try {
-            const data = await this._db.all(query)
-            this._html.write(data)
-            return data
+            return await this._db.all(query)
         } catch (err) {
             console.log(err)
         }
+    }
+
+    html(data) {
+        this._html.write(data)
     }
 
     run(query) {
