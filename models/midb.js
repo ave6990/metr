@@ -41,8 +41,18 @@ class MYdb {
         }
     }
 
-    html(data) {
-        this._html.write(data)
+    async html(queries) {
+        const results = []
+
+        if (!Array.isArray(queries)) {
+            queries = [ queries ]
+        }
+
+        for (let query of queries) {
+            results.push(await this.sql(query))
+        }
+
+        this._html.write(results)
     }
 
     run(query) {
@@ -110,7 +120,7 @@ class TasksDb extends MYdb {
         super(dbPath)
     }
 
-    async tasks() {
+    async active() {
         return await this.sql(`select * from view_tasks where status != 'done'`)
     }
 }
