@@ -12,7 +12,6 @@
         }
         table {
             margin: 10px 0;
-            width: 100%;
             border-collapse: collapse;
             border: 1px solid;
             font-size: 10pt;
@@ -29,178 +28,461 @@
 <thead>
 <tr>
 <th>id</th>
-<th>date</th>
-<th>temperature</th>
-<th>humidity</th>
-<th>pressure</th>
-<th>voltage</th>
-<th>frequency</th>
-<th>other</th>
-<th>location</th>
+<th>priority</th>
+<th>status</th>
+<th>progress</th>
+<th>description</th>
+<th>master_task</th>
+<th>category</th>
+<th>date_from</th>
+<th>date_to</th>
 <th>comment</th>
 </tr>
 </thead>
 <tbody>
 <tr id='row_0'>
-<td id='cell_0_0'>1</td>
-<td id='cell_0_1'>2019-07-02</td>
-<td id='cell_0_2'>23.3</td>
-<td id='cell_0_3'>51.2</td>
-<td id='cell_0_4'>98.79</td>
+<td id='cell_0_0'>4</td>
+<td id='cell_0_1'>high</td>
+<td id='cell_0_2'>start</td>
+<td id='cell_0_3'>0</td>
+<td id='cell_0_4'>Скважина</td>
 <td id='cell_0_5'>null</td>
-<td id='cell_0_6'>null</td>
-<td id='cell_0_7'>null</td>
-<td id='cell_0_8'>ОЦСМ</td>
-<td id='cell_0_9'></td>
+<td id='cell_0_6'>дом</td>
+<td id='cell_0_7'>2023-06-02</td>
+<td id='cell_0_8'>2023-06-07</td>
+<td id='cell_0_9'>null</td>
 </tr>
 <tr id='row_1'>
-<td id='cell_1_0'>2</td>
-<td id='cell_1_1'>2019-07-03</td>
-<td id='cell_1_2'>22.4</td>
-<td id='cell_1_3'>45.3</td>
-<td id='cell_1_4'>98.85</td>
-<td id='cell_1_5'>null</td>
-<td id='cell_1_6'>null</td>
-<td id='cell_1_7'>null</td>
-<td id='cell_1_8'>ОЦСМ</td>
-<td id='cell_1_9'></td>
+<td id='cell_1_0'>5</td>
+<td id='cell_1_1'>high</td>
+<td id='cell_1_2'>start</td>
+<td id='cell_1_3'>0</td>
+<td id='cell_1_4'>Позвонить по скважине</td>
+<td id='cell_1_5'>Скважина</td>
+<td id='cell_1_6'>дом</td>
+<td id='cell_1_7'>2023-06-02</td>
+<td id='cell_1_8'>2023-06-02</td>
+<td id='cell_1_9'>null</td>
 </tr>
 <tr id='row_2'>
-<td id='cell_2_0'>3</td>
-<td id='cell_2_1'>2019-07-04</td>
-<td id='cell_2_2'>21.1</td>
-<td id='cell_2_3'>41.4</td>
-<td id='cell_2_4'>99.69</td>
-<td id='cell_2_5'>null</td>
-<td id='cell_2_6'>null</td>
-<td id='cell_2_7'>null</td>
-<td id='cell_2_8'>ОЦСМ</td>
-<td id='cell_2_9'></td>
-</tr>
-</tbody>
-</table>
-<table class='data_from_query'>
-<thead>
-<tr>
-<th>id</th>
-<th>name</th>
-<th>comparison</th>
-<th>symbol</th>
-<th>units</th>
-</tr>
-</thead>
-<tbody>
-<tr id='row_0'>
-<td id='cell_0_0'>0</td>
-<td id='cell_0_1'>абсолютная погрешность</td>
-<td id='cell_0_2'><=</td>
-<td id='cell_0_3'>Δ</td>
-<td id='cell_0_4'>null</td>
-</tr>
-<tr id='row_1'>
-<td id='cell_1_0'>1</td>
-<td id='cell_1_1'>относительная погрешность</td>
-<td id='cell_1_2'><=</td>
-<td id='cell_1_3'>δ</td>
-<td id='cell_1_4'>%</td>
-</tr>
-<tr id='row_2'>
-<td id='cell_2_0'>2</td>
-<td id='cell_2_1'>приведенная погрешность</td>
-<td id='cell_2_2'><=</td>
-<td id='cell_2_3'>γ</td>
-<td id='cell_2_4'>%</td>
+<td id='cell_2_0'>21</td>
+<td id='cell_2_1'>high</td>
+<td id='cell_2_2'>start</td>
+<td id='cell_2_3'>0</td>
+<td id='cell_2_4'>Электропроводка</td>
+<td id='cell_2_5'>Скважина</td>
+<td id='cell_2_6'>дом</td>
+<td id='cell_2_7'>2023-06-05</td>
+<td id='cell_2_8'>2023-06-30</td>
+<td id='cell_2_9'>null</td>
 </tr>
 <tr id='row_3'>
-<td id='cell_3_0'>3</td>
-<td id='cell_3_1'>среднее квадратическое отклонение</td>
-<td id='cell_3_2'><=</td>
-<td id='cell_3_3'>СКО</td>
-<td id='cell_3_4'>%</td>
+<td id='cell_3_0'>6</td>
+<td id='cell_3_1'>normal</td>
+<td id='cell_3_2'>start</td>
+<td id='cell_3_3'>0</td>
+<td id='cell_3_4'>Кессон</td>
+<td id='cell_3_5'>Скважина</td>
+<td id='cell_3_6'>дом</td>
+<td id='cell_3_7'>2023-06-02</td>
+<td id='cell_3_8'>2023-07-10</td>
+<td id='cell_3_9'>null</td>
 </tr>
 <tr id='row_4'>
-<td id='cell_4_0'>5</td>
-<td id='cell_4_1'>вариация</td>
-<td id='cell_4_2'><=</td>
-<td id='cell_4_3'>v</td>
-<td id='cell_4_4'></td>
+<td id='cell_4_0'>20</td>
+<td id='cell_4_1'>high</td>
+<td id='cell_4_2'>start</td>
+<td id='cell_4_3'>0</td>
+<td id='cell_4_4'>Водопровод</td>
+<td id='cell_4_5'>Скважина</td>
+<td id='cell_4_6'>дом</td>
+<td id='cell_4_7'>2023-06-05</td>
+<td id='cell_4_8'>2023-07-31</td>
+<td id='cell_4_9'>null</td>
 </tr>
 <tr id='row_5'>
-<td id='cell_5_0'>6</td>
-<td id='cell_5_1'>время установления показаний</td>
-<td id='cell_5_2'><=</td>
-<td id='cell_5_3'>t₀₉</td>
-<td id='cell_5_4'>c</td>
+<td id='cell_5_0'>12</td>
+<td id='cell_5_1'>high</td>
+<td id='cell_5_2'>start</td>
+<td id='cell_5_3'>0</td>
+<td id='cell_5_4'>Отопление</td>
+<td id='cell_5_5'>null</td>
+<td id='cell_5_6'>дом</td>
+<td id='cell_5_7'>2023-06-05</td>
+<td id='cell_5_8'>2023-06-30</td>
+<td id='cell_5_9'>null</td>
 </tr>
 <tr id='row_6'>
-<td id='cell_6_0'>7</td>
-<td id='cell_6_1'>шум</td>
-<td id='cell_6_2'><=</td>
-<td id='cell_6_3'>null</td>
-<td id='cell_6_4'>null</td>
+<td id='cell_6_0'>13</td>
+<td id='cell_6_1'>high</td>
+<td id='cell_6_2'>start</td>
+<td id='cell_6_3'>0</td>
+<td id='cell_6_4'>Котел, ремонт</td>
+<td id='cell_6_5'>Отопление</td>
+<td id='cell_6_6'>дом</td>
+<td id='cell_6_7'>2023-06-05</td>
+<td id='cell_6_8'>2023-06-30</td>
+<td id='cell_6_9'>null</td>
 </tr>
 <tr id='row_7'>
-<td id='cell_7_0'>8</td>
-<td id='cell_7_1'>дрейф</td>
-<td id='cell_7_2'><=</td>
-<td id='cell_7_3'>null</td>
-<td id='cell_7_4'>null</td>
+<td id='cell_7_0'>15</td>
+<td id='cell_7_1'>high</td>
+<td id='cell_7_2'>start</td>
+<td id='cell_7_3'>0</td>
+<td id='cell_7_4'>Кладка печи</td>
+<td id='cell_7_5'>Отопление</td>
+<td id='cell_7_6'>дом</td>
+<td id='cell_7_7'>2023-06-05</td>
+<td id='cell_7_8'>2023-06-30</td>
+<td id='cell_7_9'>null</td>
 </tr>
 <tr id='row_8'>
-<td id='cell_8_0'>9</td>
-<td id='cell_8_1'>предел детектирования</td>
-<td id='cell_8_2'><=</td>
-<td id='cell_8_3'>null</td>
-<td id='cell_8_4'>null</td>
+<td id='cell_8_0'>16</td>
+<td id='cell_8_1'>high</td>
+<td id='cell_8_2'>start</td>
+<td id='cell_8_3'>0</td>
+<td id='cell_8_4'>Замена горелки</td>
+<td id='cell_8_5'>Отопление</td>
+<td id='cell_8_6'>дом</td>
+<td id='cell_8_7'>2023-06-05</td>
+<td id='cell_8_8'>2023-06-30</td>
+<td id='cell_8_9'>null</td>
 </tr>
 <tr id='row_9'>
-<td id='cell_9_0'>10</td>
-<td id='cell_9_1'>изменение выходного сигнала</td>
-<td id='cell_9_2'><=</td>
-<td id='cell_9_3'>null</td>
-<td id='cell_9_4'>%</td>
+<td id='cell_9_0'>17</td>
+<td id='cell_9_1'>high</td>
+<td id='cell_9_2'>start</td>
+<td id='cell_9_3'>0</td>
+<td id='cell_9_4'>Заменить фильтр-грязевик на обратке</td>
+<td id='cell_9_5'>Отопление</td>
+<td id='cell_9_6'>дом</td>
+<td id='cell_9_7'>2023-06-05</td>
+<td id='cell_9_8'>2023-06-30</td>
+<td id='cell_9_9'>null</td>
 </tr>
 <tr id='row_10'>
-<td id='cell_10_0'>11</td>
-<td id='cell_10_1'>время срабатывания сигнализации</td>
-<td id='cell_10_2'><=</td>
-<td id='cell_10_3'>tсигн</td>
-<td id='cell_10_4'>c</td>
+<td id='cell_10_0'>14</td>
+<td id='cell_10_1'>normal</td>
+<td id='cell_10_2'>start</td>
+<td id='cell_10_3'>0</td>
+<td id='cell_10_4'>Покраска печи</td>
+<td id='cell_10_5'>Отопление</td>
+<td id='cell_10_6'>дом</td>
+<td id='cell_10_7'>2023-06-05</td>
+<td id='cell_10_8'>2023-06-30</td>
+<td id='cell_10_9'>null</td>
 </tr>
 <tr id='row_11'>
-<td id='cell_11_0'>12</td>
-<td id='cell_11_1'>абсолютная погрешность срабатывания сигнализации</td>
-<td id='cell_11_2'>Δ = ±</td>
-<td id='cell_11_3'>Δсигн</td>
-<td id='cell_11_4'>null</td>
+<td id='cell_11_0'>19</td>
+<td id='cell_11_1'>low</td>
+<td id='cell_11_2'>start</td>
+<td id='cell_11_3'>0</td>
+<td id='cell_11_4'>Красить пристройку</td>
+<td id='cell_11_5'>Отопление</td>
+<td id='cell_11_6'>дом</td>
+<td id='cell_11_7'>2023-06-05</td>
+<td id='cell_11_8'>2023-09-30</td>
+<td id='cell_11_9'>null</td>
 </tr>
 <tr id='row_12'>
-<td id='cell_12_0'>13</td>
-<td id='cell_12_1'>относительная погрешность срабатывания сигнализации</td>
-<td id='cell_12_2'>δ = ±</td>
-<td id='cell_12_3'>δсигн</td>
-<td id='cell_12_4'>%</td>
+<td id='cell_12_0'>18</td>
+<td id='cell_12_1'>low</td>
+<td id='cell_12_2'>start</td>
+<td id='cell_12_3'>0</td>
+<td id='cell_12_4'>Подставка под зонтик</td>
+<td id='cell_12_5'>null</td>
+<td id='cell_12_6'>участок</td>
+<td id='cell_12_7'>2023-06-05</td>
+<td id='cell_12_8'>2023-06-11</td>
+<td id='cell_12_9'>null</td>
 </tr>
 <tr id='row_13'>
-<td id='cell_13_0'>14</td>
-<td id='cell_13_1'>приведенная погрешность срабатывания сигнализации</td>
-<td id='cell_13_2'>γ = ±</td>
-<td id='cell_13_3'>γсигн</td>
-<td id='cell_13_4'>%</td>
+<td id='cell_13_0'>22</td>
+<td id='cell_13_1'>normal</td>
+<td id='cell_13_2'>start</td>
+<td id='cell_13_3'>0</td>
+<td id='cell_13_4'>Перевезти трубы</td>
+<td id='cell_13_5'>null</td>
+<td id='cell_13_6'>участок</td>
+<td id='cell_13_7'>2023-06-05</td>
+<td id='cell_13_8'>2023-06-30</td>
+<td id='cell_13_9'>null</td>
 </tr>
 <tr id='row_14'>
-<td id='cell_14_0'>15</td>
-<td id='cell_14_1'>событие</td>
-<td id='cell_14_2'>null</td>
-<td id='cell_14_3'>null</td>
-<td id='cell_14_4'>null</td>
+<td id='cell_14_0'>23</td>
+<td id='cell_14_1'>normal</td>
+<td id='cell_14_2'>start</td>
+<td id='cell_14_3'>0</td>
+<td id='cell_14_4'>Погреб, ремонт</td>
+<td id='cell_14_5'>null</td>
+<td id='cell_14_6'>постройки</td>
+<td id='cell_14_7'>2023-06-05</td>
+<td id='cell_14_8'>2023-07-31</td>
+<td id='cell_14_9'>null</td>
 </tr>
 <tr id='row_15'>
-<td id='cell_15_0'>16</td>
-<td id='cell_15_1'>значение</td>
-<td id='cell_15_2'>null</td>
-<td id='cell_15_3'>null</td>
-<td id='cell_15_4'>null</td>
+<td id='cell_15_0'>26</td>
+<td id='cell_15_1'>low</td>
+<td id='cell_15_2'>start</td>
+<td id='cell_15_3'>0</td>
+<td id='cell_15_4'>Лестница</td>
+<td id='cell_15_5'>Погреб, ремонт</td>
+<td id='cell_15_6'>постройки</td>
+<td id='cell_15_7'>2023-09-01</td>
+<td id='cell_15_8'>null</td>
+<td id='cell_15_9'>null</td>
+</tr>
+<tr id='row_16'>
+<td id='cell_16_0'>27</td>
+<td id='cell_16_1'>low</td>
+<td id='cell_16_2'>start</td>
+<td id='cell_16_3'>0</td>
+<td id='cell_16_4'>Полки</td>
+<td id='cell_16_5'>Погреб, ремонт</td>
+<td id='cell_16_6'>постройки</td>
+<td id='cell_16_7'>2023-09-01</td>
+<td id='cell_16_8'>null</td>
+<td id='cell_16_9'>null</td>
+</tr>
+<tr id='row_17'>
+<td id='cell_17_0'>25</td>
+<td id='cell_17_1'>high</td>
+<td id='cell_17_2'>start</td>
+<td id='cell_17_3'>0</td>
+<td id='cell_17_4'>Утеплить углы</td>
+<td id='cell_17_5'>Погреб, ремонт</td>
+<td id='cell_17_6'>постройки</td>
+<td id='cell_17_7'>2023-06-05</td>
+<td id='cell_17_8'>2023-07-31</td>
+<td id='cell_17_9'>null</td>
+</tr>
+<tr id='row_18'>
+<td id='cell_18_0'>24</td>
+<td id='cell_18_1'>low</td>
+<td id='cell_18_2'>start</td>
+<td id='cell_18_3'>0</td>
+<td id='cell_18_4'>Убрать доски</td>
+<td id='cell_18_5'>Погреб, ремонт</td>
+<td id='cell_18_6'>постройки</td>
+<td id='cell_18_7'>2023-06-05</td>
+<td id='cell_18_8'>2023-07-31</td>
+<td id='cell_18_9'>null</td>
+</tr>
+<tr id='row_19'>
+<td id='cell_19_0'>28</td>
+<td id='cell_19_1'>high</td>
+<td id='cell_19_2'>start</td>
+<td id='cell_19_3'>0</td>
+<td id='cell_19_4'>Установить бассейн</td>
+<td id='cell_19_5'>null</td>
+<td id='cell_19_6'>участок</td>
+<td id='cell_19_7'>2023-06-05</td>
+<td id='cell_19_8'>2023-06-11</td>
+<td id='cell_19_9'>null</td>
+</tr>
+<tr id='row_20'>
+<td id='cell_20_0'>29</td>
+<td id='cell_20_1'>very_high</td>
+<td id='cell_20_2'>start</td>
+<td id='cell_20_3'>0</td>
+<td id='cell_20_4'>Ремонт фундамента</td>
+<td id='cell_20_5'>null</td>
+<td id='cell_20_6'>дом</td>
+<td id='cell_20_7'>2023-07-01</td>
+<td id='cell_20_8'>2023-07-31</td>
+<td id='cell_20_9'>null</td>
+</tr>
+<tr id='row_21'>
+<td id='cell_21_0'>30</td>
+<td id='cell_21_1'>normal</td>
+<td id='cell_21_2'>start</td>
+<td id='cell_21_3'>0</td>
+<td id='cell_21_4'>Отмостка</td>
+<td id='cell_21_5'>Ремонт фундамента</td>
+<td id='cell_21_6'>дом</td>
+<td id='cell_21_7'>2023-07-01</td>
+<td id='cell_21_8'>2023-07-31</td>
+<td id='cell_21_9'>null</td>
+</tr>
+<tr id='row_22'>
+<td id='cell_22_0'>31</td>
+<td id='cell_22_1'>low</td>
+<td id='cell_22_2'>start</td>
+<td id='cell_22_3'>0</td>
+<td id='cell_22_4'>Дрова</td>
+<td id='cell_22_5'>null</td>
+<td id='cell_22_6'>участок</td>
+<td id='cell_22_7'>2023-06-05</td>
+<td id='cell_22_8'>2023-10-30</td>
+<td id='cell_22_9'>null</td>
+</tr>
+<tr id='row_23'>
+<td id='cell_23_0'>32</td>
+<td id='cell_23_1'>low</td>
+<td id='cell_23_2'>start</td>
+<td id='cell_23_3'>0</td>
+<td id='cell_23_4'>Убрать навес</td>
+<td id='cell_23_5'>null</td>
+<td id='cell_23_6'>участок</td>
+<td id='cell_23_7'>2023-10-01</td>
+<td id='cell_23_8'>2023-10-30</td>
+<td id='cell_23_9'>null</td>
+</tr>
+<tr id='row_24'>
+<td id='cell_24_0'>33</td>
+<td id='cell_24_1'>low</td>
+<td id='cell_24_2'>start</td>
+<td id='cell_24_3'>0</td>
+<td id='cell_24_4'>Компостная яма</td>
+<td id='cell_24_5'>null</td>
+<td id='cell_24_6'>участок</td>
+<td id='cell_24_7'>2023-06-05</td>
+<td id='cell_24_8'>2023-07-01</td>
+<td id='cell_24_9'>null</td>
+</tr>
+<tr id='row_25'>
+<td id='cell_25_0'>34</td>
+<td id='cell_25_1'>normal</td>
+<td id='cell_25_2'>start</td>
+<td id='cell_25_3'>0</td>
+<td id='cell_25_4'>Гараж</td>
+<td id='cell_25_5'>null</td>
+<td id='cell_25_6'>постройки</td>
+<td id='cell_25_7'>2023-06-05</td>
+<td id='cell_25_8'>2024-10-30</td>
+<td id='cell_25_9'>null</td>
+</tr>
+<tr id='row_26'>
+<td id='cell_26_0'>36</td>
+<td id='cell_26_1'>normal</td>
+<td id='cell_26_2'>start</td>
+<td id='cell_26_3'>0</td>
+<td id='cell_26_4'>Фундамент</td>
+<td id='cell_26_5'>Гараж</td>
+<td id='cell_26_6'>дом</td>
+<td id='cell_26_7'>2023-06-05</td>
+<td id='cell_26_8'>2023-10-30</td>
+<td id='cell_26_9'>null</td>
+</tr>
+<tr id='row_27'>
+<td id='cell_27_0'>35</td>
+<td id='cell_27_1'>normal</td>
+<td id='cell_27_2'>start</td>
+<td id='cell_27_3'>0</td>
+<td id='cell_27_4'>Убрать летнюю кухню</td>
+<td id='cell_27_5'>Гараж</td>
+<td id='cell_27_6'>постройки</td>
+<td id='cell_27_7'>2023-06-05</td>
+<td id='cell_27_8'>2023-10-30</td>
+<td id='cell_27_9'>null</td>
+</tr>
+<tr id='row_28'>
+<td id='cell_28_0'>37</td>
+<td id='cell_28_1'>very_high</td>
+<td id='cell_28_2'>start</td>
+<td id='cell_28_3'>0</td>
+<td id='cell_28_4'>Перекрыть крышу</td>
+<td id='cell_28_5'>null</td>
+<td id='cell_28_6'>дом</td>
+<td id='cell_28_7'>2023-08-01</td>
+<td id='cell_28_8'>2023-08-25</td>
+<td id='cell_28_9'>null</td>
+</tr>
+<tr id='row_29'>
+<td id='cell_29_0'>38</td>
+<td id='cell_29_1'>very_high</td>
+<td id='cell_29_2'>start</td>
+<td id='cell_29_3'>0</td>
+<td id='cell_29_4'>Столбы для навеса</td>
+<td id='cell_29_5'>Перекрыть крышу</td>
+<td id='cell_29_6'>дом</td>
+<td id='cell_29_7'>2023-08-01</td>
+<td id='cell_29_8'>2023-08-25</td>
+<td id='cell_29_9'>null</td>
+</tr>
+<tr id='row_30'>
+<td id='cell_30_0'>39</td>
+<td id='cell_30_1'>very_high</td>
+<td id='cell_30_2'>start</td>
+<td id='cell_30_3'>0</td>
+<td id='cell_30_4'>Замеры</td>
+<td id='cell_30_5'>null</td>
+<td id='cell_30_6'>дом</td>
+<td id='cell_30_7'>2023-08-01</td>
+<td id='cell_30_8'>2023-08-25</td>
+<td id='cell_30_9'>null</td>
+</tr>
+<tr id='row_31'>
+<td id='cell_31_0'>40</td>
+<td id='cell_31_1'>low</td>
+<td id='cell_31_2'>start</td>
+<td id='cell_31_3'>0</td>
+<td id='cell_31_4'>Мастерская</td>
+<td id='cell_31_5'>null</td>
+<td id='cell_31_6'>постройки</td>
+<td id='cell_31_7'>2023-06-05</td>
+<td id='cell_31_8'>2025-10-30</td>
+<td id='cell_31_9'>null</td>
+</tr>
+<tr id='row_32'>
+<td id='cell_32_0'>41</td>
+<td id='cell_32_1'>low</td>
+<td id='cell_32_2'>start</td>
+<td id='cell_32_3'>0</td>
+<td id='cell_32_4'>Буржуйка</td>
+<td id='cell_32_5'>Мастерская</td>
+<td id='cell_32_6'>постройки</td>
+<td id='cell_32_7'>2023-10-30</td>
+<td id='cell_32_8'>2025-10-30</td>
+<td id='cell_32_9'>null</td>
+</tr>
+<tr id='row_33'>
+<td id='cell_33_0'>42</td>
+<td id='cell_33_1'>low</td>
+<td id='cell_33_2'>start</td>
+<td id='cell_33_3'>0</td>
+<td id='cell_33_4'>Утепление</td>
+<td id='cell_33_5'>Мастерская</td>
+<td id='cell_33_6'>постройки</td>
+<td id='cell_33_7'>2023-10-30</td>
+<td id='cell_33_8'>2025-10-30</td>
+<td id='cell_33_9'>null</td>
+</tr>
+<tr id='row_34'>
+<td id='cell_34_0'>43</td>
+<td id='cell_34_1'>normal</td>
+<td id='cell_34_2'>start</td>
+<td id='cell_34_3'>0</td>
+<td id='cell_34_4'>Забор</td>
+<td id='cell_34_5'>null</td>
+<td id='cell_34_6'>участок</td>
+<td id='cell_34_7'>2023-06-05</td>
+<td id='cell_34_8'>2024-10-30</td>
+<td id='cell_34_9'>null</td>
+</tr>
+<tr id='row_35'>
+<td id='cell_35_0'>44</td>
+<td id='cell_35_1'>low</td>
+<td id='cell_35_2'>start</td>
+<td id='cell_35_3'>0</td>
+<td id='cell_35_4'>Летний душ</td>
+<td id='cell_35_5'>null</td>
+<td id='cell_35_6'>постройки</td>
+<td id='cell_35_7'>2023-06-05</td>
+<td id='cell_35_8'>2026-10-30</td>
+<td id='cell_35_9'>null</td>
+</tr>
+<tr id='row_36'>
+<td id='cell_36_0'>45</td>
+<td id='cell_36_1'>low</td>
+<td id='cell_36_2'>start</td>
+<td id='cell_36_3'>0</td>
+<td id='cell_36_4'>Уличный туалет</td>
+<td id='cell_36_5'>null</td>
+<td id='cell_36_6'>постройки</td>
+<td id='cell_36_7'>2023-06-05</td>
+<td id='cell_36_8'>2025-10-30</td>
+<td id='cell_36_9'>null</td>
 </tr>
 </tbody>
 </table>

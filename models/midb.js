@@ -2,6 +2,7 @@ import sqlite3 from 'sqlite3'
 import { open } from 'sqlite'
 import { htmlPage } from '../lib/html-gen.js'
 import fs from 'fs'
+import { tasksQueries } from '../lib/sql.js'
 
 class MYdb {
     constructor(dbPath='data/midb.db') {
@@ -33,6 +34,7 @@ class MYdb {
         this.q = queries
     }
 
+    /** Execute a single query and return the resulting data. */
     async sql(query) {
         try {
             return await this._db.all(query)
@@ -41,7 +43,13 @@ class MYdb {
         }
     }
 
-    async html(queries) {
+    async getRecord(table, id) {
+        const rec = await this.sql(`select * from ${table} where id =${id}`)
+        return rec[0]
+    }
+
+    /** Out the results an html file. */
+    async view(queries) {
         const results = []
 
         if (!Array.isArray(queries)) {
@@ -55,6 +63,15 @@ class MYdb {
         this._html.write(results)
     }
 
+    /** data - json objects array [ [{}, {}, ...], [{}, {}, ...], ...] */
+    jsonView(data) {
+        try {
+            this._html.write(data)
+        } catch (err) {
+            console.error('Data undefined!\n', err)
+        }
+    }
+
     run(query) {
         try {
             this._db.run(query)
@@ -63,6 +80,7 @@ class MYdb {
         }
     }
 
+    /** Show the data base tables. */
     async tables() {
         const query = 'select type, name from sqlite_master where type = "table" or type = "view" order by type'
         try {
@@ -86,13 +104,50 @@ class MYdb {
         }
     }
 
-    write(table, record) {
-        let query = `insert into ${table} values (${Object.values(record).join(', ')})`
+    insert(table, data) {
+        if (!Array.isArray(data)) {
+            data = [ data ]
+        }
 
-        try {
-            this._db.run(query)
-        } catch (err) {
-            console.log(err)
+        data = this.validRecord(data)
+
+        let values = data.map((record) => `(${Object.values(record).join(', ')})`).join(', ')
+        let query = `insert into ${table} values ${values}`
+
+        this.run(query)
+    }
+
+    validRecord(data) {
+        for (const [i, rec] of Object.entries(data)) {
+            for (const [key, value] of Object.entries(rec)) {
+                if (typeof value == 'string') {
+                    data[i][key] = `"${value}"`
+                } else if (value === null) {
+                    data[i][key] = 'null'
+                }
+                console.log(key, value)
+            }
+        }
+
+        return data
+    }
+
+    update(table, data) {
+        if (!Array.isArray(data)) {
+            data = [ data ]
+        }
+
+        data = this.validRecord(data)
+
+        for (const [i, rec] of Object.entries(data)) {
+            let values = [] 
+
+            for (const [key, value] of Object.entries(rec)) {
+                values.push(`${key} = ${value}`)
+            }
+
+            let query = `update ${table} set ${values.join(', ')} where id = ${rec.id}`
+            this.run(query)
         }
     }
 }
@@ -116,16 +171,30 @@ class MIdb extends MYdb {
 }
 
 class TasksDb extends MYdb {
-    constructor(dbPath='data/personal.db') {
+    constructor(dbPath='data/tasks.db') {
         super(dbPath)
+        this.setQueries(tasksQueries)
     }
 
-    async active() {
-        return await this.sql(`select * from view_tasks where status != 'done'`)
+    active() {
+        this.view(this.q.active_tasks)
+    }
+
+    task(id) {
+        this.view(this.q.tasks_by_id.replace('#{}', id))
+    }
+
+    info() {
+        this.view([
+            'select * from categories',
+            'select * from statuses',
+            'select * from priority',
+        ])
     }
 }
 
 const mi = new MIdb()
 const tsk = new TasksDb()
+const ptsk = new TasksDb('data/personal.db')
 
-export { mi, tsk }
+export { mi, tsk, ptsk }

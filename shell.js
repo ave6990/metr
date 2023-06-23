@@ -12,7 +12,7 @@ import { AirVolume } from './lib/air-volume.js'
 import * as date from './lib/date.js'
 import { report } from './scripts/base-converter.js'
 import * as converter from './lib/converter.js'
-import { mi, tsk } from './models/midb.js'
+import { mi, tsk, ptsk } from './models/midb.js'
 
 const initializeContext = (context) => {
     Object.assign(context, {
@@ -43,6 +43,7 @@ const initializeContext = (context) => {
         },
         mi: mi,
         tsk: tsk,
+        ptsk: ptsk,
     } )
 }
 
@@ -54,9 +55,3 @@ initializeContext(r.context)
 r.on('reset', initializeContext)
 
 const print = r.context.console.log
-
-print('')
-print('Conditions:')
-//r.context.conditions = await mi.sql('select * from conditions order by id desc limit 1')
-print(r.context.conditions)
-print('')
