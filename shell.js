@@ -21,7 +21,6 @@ const initializeContext = (context) => {
         reducedError: metrology.reducedError,
         sko: metrology.sko,
         average: metrology.average,
-        precision: metrology.precision,
         round: metrology.round,
         discrete: metrology.discrete,
         airVolume: AirVolume,
