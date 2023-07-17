@@ -204,11 +204,7 @@ class TasksDb extends MYdb {
     }
 
     async task(id) {
-        return await this.sql(this.q.tasks_by_id.replace('#{}', id))
-    }
-
-    async masterTask(id) {
-        return await this.sql(this.q.tasks_by_master_task.replace('#{}', id))
+        return await this.sql(this.q.tasks_by_id.replaceAll('#{}', id))
     }
 
     info() {
