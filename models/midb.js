@@ -3,6 +3,7 @@ import { open } from 'sqlite'
 import { htmlPage } from '../lib/html-gen.js'
 import fs from 'fs'
 import { tasksQueries } from '../lib/sql.js'
+import * as date from '../lib/date.js'
 
 class MYdb {
     constructor(dbPath='data/midb.db') {
@@ -124,8 +125,7 @@ class MYdb {
                     data[i][key] = `"${value}"`
                 } else if (value === null) {
                     data[i][key] = 'null'
-                }
-                console.log(key, value)
+                } 
             }
         }
 
@@ -176,12 +176,39 @@ class TasksDb extends MYdb {
         this.setQueries(tasksQueries)
     }
 
-    active() {
-        this.view(this.q.active_tasks)
+    async active(limit = 0) {
+        let query = this.q.active_tasks
+
+        if (limit > 0) {
+            query = `${query} limit ${limit}`
+        }
+
+        return await this.sql(query)
     }
 
-    task(id) {
-        this.view(this.q.tasks_by_id.replace('#{}', id))
+    async record() {
+        const obj = await super.record('tasks')
+        obj.creation_date = obj.date_from = date.toString(new Date())
+        obj.status = 0
+        obj.priority = 2
+
+        return obj
+    }
+
+    insert(data) {
+        super.insert('tasks', data)
+    }
+
+    update(data) {
+        super.update('tasks', data)
+    }
+
+    async task(id) {
+        return await this.sql(this.q.tasks_by_id.replace('#{}', id))
+    }
+
+    async masterTask(id) {
+        return await this.sql(this.q.tasks_by_master_task.replace('#{}', id))
     }
 
     info() {
