@@ -186,11 +186,12 @@ class TasksDb extends MYdb {
         return await this.sql(query)
     }
 
-    async record() {
+    async record(description = null, priority = 2, date_to = null) {
         const obj = await super.record('tasks')
-        obj.creation_date = obj.date_from = date.toString(new Date())
+        obj.description = description
+        obj.date_from = date.toString(new Date())
         obj.status = 0
-        obj.priority = 2
+        obj.priority = priority
 
         return obj
     }
