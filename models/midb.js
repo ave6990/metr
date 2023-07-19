@@ -186,10 +186,11 @@ class TasksDb extends MYdb {
         return await this.sql(query)
     }
 
-    async record(description = null, priority = 2, date_to = null) {
+    async record(description = null, priority = 10, date_to = null) {
         const obj = await super.record('tasks')
         obj.description = description
         obj.date_from = date.toString(new Date())
+        obj.date_to = date.toString(new Date())
         obj.status = 0
         obj.priority = priority
 
@@ -206,14 +207,6 @@ class TasksDb extends MYdb {
 
     async task(id) {
         return await this.sql(this.q.tasks_by_id.replaceAll('#{}', id))
-    }
-
-    info() {
-        this.view([
-            'select * from categories',
-            'select * from statuses',
-            'select * from priority',
-        ])
     }
 }
 
