@@ -177,7 +177,7 @@ class TasksDb extends MYdb {
     }
 
     async active(limit = 0) {
-        let query = this.q.active_tasks
+        let query = this.q.active_tasks()
 
         if (limit > 0) {
             query = `${query} limit ${limit}`
@@ -197,7 +197,7 @@ class TasksDb extends MYdb {
         return obj
     }
 
-    insert(data) {
+    add(data) {
         super.insert('tasks', data)
     }
 
@@ -206,7 +206,11 @@ class TasksDb extends MYdb {
     }
 
     async task(id) {
-        return await this.sql(this.q.tasks_by_id.replaceAll('#{}', id))
+        return await this.sql(this.q.tasks_by_id(id))
+    }
+
+    complete(id) {
+        this.run(this.q.complete_task(id, date.toString(new Date())))
     }
 }
 
