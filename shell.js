@@ -13,6 +13,7 @@ import * as date from './lib/date.js'
 import { report } from './scripts/base-converter.js'
 import * as converter from './lib/converter.js'
 import { mi, tsk, ptsk } from './models/midb.js'
+import { Generator } from './scripts/gen-values.js'
 
 const initializeContext = (context) => {
     Object.assign(context, {
@@ -23,6 +24,8 @@ const initializeContext = (context) => {
         average: metrology.average,
         round: metrology.round,
         discrete: metrology.discrete,
+        // генерирует случайные числа в пределах погрешности для измерений
+        gen: new Generator(mi),
         airVolume: AirVolume,
         baseConverter: report,
         converter: converter,

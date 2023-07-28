@@ -2,7 +2,7 @@ import sqlite3 from 'sqlite3'
 import { open } from 'sqlite'
 import { htmlPage } from '../lib/html-gen.js'
 import fs from 'fs'
-import { tasksQueries } from '../lib/sql.js'
+import { midbQueries, tasksQueries } from '../lib/sql.js'
 import * as date from '../lib/date.js'
 
 class MYdb {
@@ -155,6 +155,7 @@ class MYdb {
 class MIdb extends MYdb {
     constructor(dbPath='data/midb.db') {
         super(dbPath)
+        this.setQueries(midbQueries)
     }
 
     async conditions(date) {
