@@ -49,8 +49,8 @@ class Generator {
     } */
     _genValue(obj, limit = 0.75) {
         const rand = Math.random()
-        const ref = obj.ref_value == null ? 0 : obj.ref_value
-        const lowUnit = obj.low_unit == null ? 0.1 : obj.low_unit
+        let ref = obj.ref_value == null ? 0 : obj.ref_value
+        let lowUnit = obj.low_unit == null ? 0.1 : obj.low_unit
         let diff = 0
 
         if (obj.type_id == 0) {
@@ -62,6 +62,7 @@ class Generator {
         } else if (obj.type_id == 6) {
             diff = Math.round(obj.value * 0.15)
             ref = Math.round(obj.value * 0.8)
+            lowUnit = 1
         }
 
         diff = diff * limit
@@ -87,7 +88,9 @@ class Generator {
                 return { 'id': o.id, 'value': this._genValue(o)}
             })
             const queries = res.map(o => this._updateMeasurementsQuery(o.id, o.value))
-            queries.map(q => this.db.run(q))
+            queries.map(async (q) => {
+                this.db.run(q)
+            })
         }
     }
 }
